@@ -1,0 +1,62 @@
+
+asus@ASUS-PC /D/git/myHomework/schoolbook/ch02 (schoolbook)
+$ javac p34_01_Temperature3.java
+
+asus@ASUS-PC /D/git/myHomework/schoolbook/ch02 (schoolbook)
+$ java p34_01_Temperature3
+今天的華氏溫度為：
+32
+溫度為攝氏0.0度。
+
+============================================================
+原來代碼中的scale初始化如下
+int scale = 048;
+因為0開頭的是 八進制 ，會產生如下的編譯錯誤：
+我改成047
+
+d:\git\myHomework\java\schoolbook\ch02>javac Ex0207.java
+Ex0207.java:3: 错误: 过大的整数: 048
+                int scale = 048;
+                            ^
+1 个错误
+
+d:\git\myHomework\java\schoolbook\ch02>
+
+之後編譯
+源代碼中的   float size = scale * 1.5;
+又出現錯誤：
+d:\git\myHomework\java\schoolbook\ch02>javac Ex0207.java
+Ex0207.java:4: 错误: 可能损失精度
+                float size = scale * 1.5;
+                                   ^
+  需要: float
+  找到:    double
+1 个错误
+
+d:\git\myHomework\java\schoolbook\ch02>
+
+我改為 float size = (float)(scale * 1.5);
+編譯執行過程如下：
+d:\git\myHomework\java\schoolbook\ch02>javac Ex0207.java
+
+d:\git\myHomework\java\schoolbook\ch02>java Ex0207
+Size is 58.5
+
+d:\git\myHomework\java\schoolbook\ch02>
+
+============================================================
+
+d:\git\myHomework\java\schoolbook\ch02>javac Ex0208.java
+
+d:\git\myHomework\java\schoolbook\ch02>java Ex0208
+Please input a number, integer type: 42
+num is an even number.
+
+d:\git\myHomework\java\schoolbook\ch02>java Ex0208
+Please input a number, integer type: 43
+num is an odd number.
+
+d:\git\myHomework\java\schoolbook\ch02>
+
+
+============================================================

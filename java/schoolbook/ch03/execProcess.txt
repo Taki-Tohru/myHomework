@@ -1,0 +1,21 @@
+d:\git\myHomework\java\schoolbook>javac p42_01_Time.java
+
+d:\git\myHomework\java\schoolbook>java p42_01_Time
+請輸入24小時制時間：
+23
+現在是 11 P.M.
+
+d:\git\myHomework\java\schoolbook>java p42_01_Time
+請輸入24小時制時間：
+6
+現在是 6 A.M.
+
+d:\git\myHomework\java\schoolbook>
+
+============================================================
+
+============================================================
+
+============================================================
+
+============================================================

@@ -14,6 +14,15 @@ d:\git\myHomework\java\schoolbook>
 
 ============================================================
 
+d:\git\myHomework\java\schoolbook\ch03>javac p49_01_squareMax.java
+
+d:\git\myHomework\java\schoolbook\ch03>java p49_01_squareMax
+Please input an integer number:
+46
+The square not great than 46's integer number is: 6
+
+d:\git\myHomework\java\schoolbook\ch03>
+
 ============================================================
 
 ============================================================

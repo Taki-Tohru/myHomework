@@ -55,3 +55,59 @@ d:\git\myHomework\java\schoolbook\ch03>java p53_01_Sunzi2
 d:\git\myHomework\java\schoolbook\ch03>
 
 ============================================================
+
+d:\git\myHomework\java\schoolbook\ch03>javac p55_01_SquareRoot.java
+
+d:\git\myHomework\java\schoolbook\ch03>java p55_01_SquareRoot
+請輸入一個正數： 45
+求得45.0的平方根是6.708203932499369
+
+d:\git\myHomework\java\schoolbook\ch03>
+
+============================================================
+
+d:\git\myHomework\java\schoolbook\ch03>javac p57_01_Alphabet.java
+
+d:\git\myHomework\java\schoolbook\ch03>java p57_01_Alphabet
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+Z Y X W V U T S R Q P O N M L K J I H G F E D C B A
+
+d:\git\myHomework\java\schoolbook\ch03>
+
+============================================================
+
+d:\git\myHomework\java\schoolbook\ch03>java p57_02_TemperatureTable
+攝氏10度相當於華氏50.0度
+攝氏9度相當於華氏48.2度
+攝氏8度相當於華氏46.4度
+攝氏7度相當於華氏44.6度
+攝氏6度相當於華氏42.8度
+攝氏5度相當於華氏41.0度
+攝氏4度相當於華氏39.2度
+攝氏3度相當於華氏37.4度
+攝氏2度相當於華氏35.6度
+攝氏1度相當於華氏33.8度
+攝氏0度相當於華氏32.0度
+攝氏-1度相當於華氏30.2度
+攝氏-2度相當於華氏28.4度
+攝氏-3度相當於華氏26.6度
+攝氏-4度相當於華氏24.8度
+攝氏-5度相當於華氏23.0度
+攝氏-6度相當於華氏21.2度
+攝氏-7度相當於華氏19.4度
+攝氏-8度相當於華氏17.6度
+攝氏-9度相當於華氏15.8度
+攝氏-10度相當於華氏14.0度
+
+============================================================
+d:\git\myHomework\java\schoolbook\ch03>javac ex0302.java
+
+d:\git\myHomework\java\schoolbook\ch03>java ex0302
+153是水仙花數。
+370是水仙花數。
+371是水仙花數。
+407是水仙花數。
+
+d:\git\myHomework\java\schoolbook\ch03>
+
+============================================================

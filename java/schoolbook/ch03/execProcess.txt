@@ -25,6 +25,33 @@ d:\git\myHomework\java\schoolbook\ch03>
 
 ============================================================
 
+d:\git\myHomework\java\schoolbook\ch03>javac p52_01_Sunzi.java
+
+d:\git\myHomework\java\schoolbook\ch03>java p52_01_Sunzi
+滿足條件的最小的自然數是23
+
+d:\git\myHomework\java\schoolbook\ch03>
+
 ============================================================
+
+d:\git\myHomework\java\schoolbook\ch03>javac p52_02_multiSunzi.java
+
+d:\git\myHomework\java\schoolbook\ch03>java p52_02_multiSunzi
+找到第1個滿足條件的自然數是23
+找到第2個滿足條件的自然數是128
+找到第3個滿足條件的自然數是233
+找到第4個滿足條件的自然數是338
+找到第5個滿足條件的自然數是443
+
+d:\git\myHomework\java\schoolbook\ch03>
+
+============================================================
+
+d:\git\myHomework\java\schoolbook\ch03>javac p53_01_Sunzi2.java
+
+d:\git\myHomework\java\schoolbook\ch03>java p53_01_Sunzi2
+滿足條件的最小的自然數是 23
+
+d:\git\myHomework\java\schoolbook\ch03>
 
 ============================================================

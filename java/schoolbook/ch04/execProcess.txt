@@ -1,0 +1,79 @@
+d:\git\myHomework\java\schoolbook\ch04>javac p64_01_MaxUsingMethod.java
+
+d:\git\myHomework\java\schoolbook\ch04>java p64_01_MaxUsingMethod
+請輸入3個浮點數(請以回車鍵結束一個數的輸入)：
+12.5
+34.8
+77.9
+最大值為77.9
+
+d:\git\myHomework\java\schoolbook\ch04>
+
+============================================================
+
+d:\git\myHomework\java\schoolbook\ch04>javac p68_01_EmbeddedMethods.java
+
+d:\git\myHomework\java\schoolbook\ch04>java p68_01_EmbeddedMethods
+1, 蘋果
+2, 栗子
+0, 退出
+請選擇(0~2): 1
+你選擇了蘋果
+1, 蘋果
+2, 栗子
+0, 退出
+請選擇(0~2): 2
+你選擇了栗子
+1, 蘋果
+2, 栗子
+0, 退出
+請選擇(0~2): g
+你的選擇不正確
+1, 蘋果
+2, 栗子
+0, 退出
+請選擇(0~2): 0
+
+d:\git\myHomework\java\schoolbook\ch04>
+
+============================================================
+
+d:\git\myHomework\java\schoolbook\ch04>javac p78_01_RecursiveFactorial.java
+
+d:\git\myHomework\java\schoolbook\ch04>java p78_01_RecursiveFactorial
+1! = 1
+2! = 2
+3! = 6
+4! = 24
+5! = 120
+6! = 720
+
+d:\git\myHomework\java\schoolbook\ch04>
+
+============================================================
+d:\git\myHomework\java\schoolbook\ch04>javac p79_01_HanoiTower.java
+
+d:\git\myHomework\java\schoolbook\ch04>java p79_01_HanoiTower
+將#1盤從A移到B
+將#2盤從A移到C
+將#1盤從B移到C
+將#3盤從A移到B
+將#1盤從C移到A
+將#2盤從C移到B
+將#1盤從A移到B
+將#4盤從A移到C
+將#1盤從B移到C
+將#2盤從B移到A
+將#1盤從C移到A
+將#3盤從B移到C
+將#1盤從A移到B
+將#2盤從A移到C
+將#1盤從B移到C
+
+d:\git\myHomework\java\schoolbook\ch04>
+
+============================================================
+
+============================================================
+
+============================================================

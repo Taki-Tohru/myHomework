@@ -1,0 +1,17 @@
+D:\javaDir\data_structure_and_algorithm\ch02>javac p28_01_array.java
+
+D:\javaDir\data_structure_and_algorithm\ch02>java p28_01_array
+77 99 44 55 22 88 11 0 66 33
+Found 66
+77 99 44 22 88 11 0 66 33
+D:\javaDir\data_structure_and_algorithm\ch02>
+
+============================================================
+
+D:\javaDir\data_structure_and_algorithm\ch02>java p31_01_LowArrayApp_Main
+77 99 44 55 22 88 11 0 66 33
+Can't find 26
+77 99 44 22 88 11 0 66 33
+D:\javaDir\data_structure_and_algorithm\ch02>
+
+============================================================

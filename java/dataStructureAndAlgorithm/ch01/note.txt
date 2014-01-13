@@ -1,0 +1,51 @@
+p18
+如果在java中要判斷兩個對象中是否含有相同的數據，則要使用Object類中的
+equals()方法：
+carPart cp1 = new carPart("fender");
+carPart cp2 = cp1;
+if(cp1.equals(cp2))
+	System.out.println("They're equal");
+
+p19
+float型變量的字面表達用F做後綴(例如，3.14159F)；
+double型變量的字面表達不需要後綴。
+long型變量的字面表達用L做後綴(例如，45L)；
+其他整型的字面表達不需要後綴。
+
+p20
+字符串輸入很複雜。下面的方法返回用戶輸入的字符串：
+public static String getString() throws IOException 
+{
+	InputStreamReader isr = new InputStreamReader(System.in);
+	BufferedReader br = new BufferedReader(isr);
+	String s = br.readLine();
+	return s;
+}
+上面的代碼除了引入java.io.*, 還要為所有的輸入方法加上throws IOException。
+事實上，所有方法，譬如main()，凡是要調用任何輸入方法的，就需要在其中加上throws IOException。
+
+輸入字符
+public static char getChar() throws IOException
+{
+	String s = getString();
+	return s.charAt(0);
+}
+
+輸入整數
+public int getInt() throws IOException
+{
+	String s = getString();
+	return Integer.parseInt(s);
+}
+在SDK的老版本中，任何使用parseInt()方法的程序開頭都必須包括下條語句：
+import java.lang.Integer;
+但現在已不是必需的了。
+
+p21
+輸入浮點型數
+public double getDouble() throws IOException
+{
+	String s = getString();
+	Double aDub = Double.valueOf(s);
+	return aDub.doubleValue();
+}

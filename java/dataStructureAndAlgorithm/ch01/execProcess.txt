@@ -1,0 +1,44 @@
+
+D:\javaDir\data_structure_and_algorithm\ch01>javac p13_01_bank.java
+
+D:\javaDir\data_structure_and_algorithm\ch01>java p13_01_BankApp_Main
+Before transactions,
+balance = 100.0
+After transactions,
+balance = 154.35
+
+D:\javaDir\data_structure_and_algorithm\ch01>
+
+============================================================
+D:\javaDir\data_structure_and_algorithm\ch01>javac p16_01_reference.java
+
+D:\javaDir\data_structure_and_algorithm\ch01>java p16_01_BankAppRef_Main
+bc1: Before transactions,
+balance = 100.0
+bc2: Before transactions,
+balance = 100.0
+----------
+After bc1 deposit,
+bc1, balance = 174.35
+bc2, balance = 174.35
+----------
+After bc2 withdraw,
+bc1, balance = 154.35
+bc2, balance = 154.35
+
+D:\javaDir\data_structure_and_algorithm\ch01>
+
+============================================================
+D:\javaDir\data_structure_and_algorithm\ch01>javac testDouble.java
+
+D:\javaDir\data_structure_and_algorithm\ch01>java testDouble
+Please input a double type number:
+12.8877
+Your input number is: 12.8877
+
+D:\javaDir\data_structure_and_algorithm\ch01>
+
+============================================================
+============================================================
+============================================================
+============================================================

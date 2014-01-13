@@ -1,0 +1,23 @@
+
+============================================================
+
+d:\git\myHomework\java\schoolbook\ch05>javac p86_01_Bank.java
+p86_01_Bank.java:1: 错误: 类p86_01_Bank_Main是公共的, 应在名为 p86_01_Bank_Main.
+java 的文件中声明
+public class p86_01_Bank_Main {
+       ^
+1 个错误
+
+d:\git\myHomework\java\schoolbook\ch05>
+------------------------------------------------------------
+d:\git\myHomework\java\schoolbook\ch05>javac p86_01_Bank_Main.java
+
+d:\git\myHomework\java\schoolbook\ch05>java p86_01_Bank_Main
+張的賬戶餘額為 250.0
+李的賬戶餘額為 150.0
+
+d:\git\myHomework\java\schoolbook\ch05>
+
+
+
+============================================================

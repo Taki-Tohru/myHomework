@@ -21,3 +21,50 @@ d:\git\myHomework\java\schoolbook\ch05>
 
 
 ============================================================
+d:\git\myHomework\java\schoolbook\ch05>java p91_01_UniformCreditCard_Main
+張的信用卡餘額為： -300.0
+李的信用卡餘額為： 700.0
+
+d:\git\myHomework\java\schoolbook\ch05>
+
+============================================================
+d:\git\myHomework\java\schoolbook\ch05>java p92_01_AdjustableCreditCard
+張的信用卡餘額為-1100.0
+李的信用卡餘額為1500.0
+
+d:\git\myHomework\java\schoolbook\ch05>
+
+============================================================
+d:\git\myHomework\java\schoolbook\ch05>java p93_01_Transfer_Main
+張的賬戶餘額為 250.0
+李的賬戶餘額為 150.0
+
+d:\git\myHomework\java\schoolbook\ch05>
+
+============================================================
+d:\git\myHomework\java\schoolbook\ch05>javac p99_01_StringDemo.java
+
+d:\git\myHomework\java\schoolbook\ch05>java p99_01_StringDemo
+myName.length: 9
+lengthA: 3
+equals: false
+equalsIgnoreCase: true
+compareTo: 12
+charAt(4): r
+indexOf('a'): 5
+lastIndexOf('a'): 18
+grammin
+abc123
+true
+true
+8
+12
+programming in java
+PROGRAMMING IN JAVA
+progrAmming in jAvA
+
+d:\git\myHomework\java\schoolbook\ch05>
+
+============================================================
+============================================================
+============================================================

@@ -1,4 +1,3 @@
-
 ============================================================
 
 d:\git\myHomework\java\schoolbook\ch05>javac p86_01_Bank.java
@@ -18,15 +17,10 @@ d:\git\myHomework\java\schoolbook\ch05>java p86_01_Bank_Main
 
 d:\git\myHomework\java\schoolbook\ch05>
 
-
-
 ============================================================
-<<<<<<< HEAD
 
 d:\git\myHomework\java\schoolbook\ch05>javac p91_01_UniformCreditCard_Main.java
 
-=======
->>>>>>> ch05_Ok_i_am_come
 d:\git\myHomework\java\schoolbook\ch05>java p91_01_UniformCreditCard_Main
 張的信用卡餘額為： -300.0
 李的信用卡餘額為： 700.0
@@ -34,12 +28,9 @@ d:\git\myHomework\java\schoolbook\ch05>java p91_01_UniformCreditCard_Main
 d:\git\myHomework\java\schoolbook\ch05>
 
 ============================================================
-<<<<<<< HEAD
 
 d:\git\myHomework\java\schoolbook\ch05>javac p92_01_AdjustableCreditCard.java
 
-=======
->>>>>>> ch05_Ok_i_am_come
 d:\git\myHomework\java\schoolbook\ch05>java p92_01_AdjustableCreditCard
 張的信用卡餘額為-1100.0
 李的信用卡餘額為1500.0
@@ -47,12 +38,9 @@ d:\git\myHomework\java\schoolbook\ch05>java p92_01_AdjustableCreditCard
 d:\git\myHomework\java\schoolbook\ch05>
 
 ============================================================
-<<<<<<< HEAD
 
 d:\git\myHomework\java\schoolbook\ch05>javac p93_01_Transfer_Main.java
 
-=======
->>>>>>> ch05_Ok_i_am_come
 d:\git\myHomework\java\schoolbook\ch05>java p93_01_Transfer_Main
 張的賬戶餘額為 250.0
 李的賬戶餘額為 150.0
@@ -60,8 +48,7 @@ d:\git\myHomework\java\schoolbook\ch05>java p93_01_Transfer_Main
 d:\git\myHomework\java\schoolbook\ch05>
 
 ============================================================
-<<<<<<< HEAD
-=======
+
 d:\git\myHomework\java\schoolbook\ch05>javac p99_01_StringDemo.java
 
 d:\git\myHomework\java\schoolbook\ch05>java p99_01_StringDemo
@@ -86,6 +73,5 @@ progrAmming in jAvA
 d:\git\myHomework\java\schoolbook\ch05>
 
 ============================================================
->>>>>>> ch05_Ok_i_am_come
 ============================================================
 ============================================================

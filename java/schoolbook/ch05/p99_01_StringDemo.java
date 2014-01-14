@@ -1,6 +1,6 @@
+// 演示字符串對象的用法
 
-
-class p99_01_StringDemo {
+public class p99_01_StringDemo {
 	public static void main(String[] args) {
 		String myName = "G. Leeman";
 		int lengthA = "張曉風".length();

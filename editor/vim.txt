@@ -1,0 +1,16 @@
+vi編輯器的一些命令的使用記錄：
+
+在每行的行首增加字符串HITLER
+:g/^/s//HITLER/g
+
+在每行的行尾添加LOVE
+:g/$/s//LOVE/g
+
+從文本的第3行至最後一行的行獸全部插入字符串 HACKER
+:3,$s/^/HACKER/
+
+在整個文件中的root替換為特定字符串hacker
+:%s/root/hacker/g
+
+將3到7行的sbin換成xxxx
+:3,7s/sbin/xxxx/

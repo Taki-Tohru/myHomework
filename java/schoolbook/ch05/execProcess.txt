@@ -66,5 +66,24 @@ progrAmming in jAvA
 d:\git\myHomework\java\schoolbook\ch05>
 
 ============================================================
+
+d:\git\myHomework\java\schoolbook\ch05>javac p106_01_ClassDemo.java
+
+d:\git\myHomework\java\schoolbook\ch05>java p106_01_ClassDemo
+類p106_01_ClassDemo的第0個域的名字是value
+類p106_01_ClassDemo的第0個方法的名字是test
+類p106_01_ClassDemo的第1個方法的名字是main
+類p106_01_ClassDemo的第2個方法的名字是getClass
+類p106_01_ClassDemo的第3個方法的名字是hashCode
+類p106_01_ClassDemo的第4個方法的名字是equals
+類p106_01_ClassDemo的第5個方法的名字是toString
+類p106_01_ClassDemo的第6個方法的名字是notify
+類p106_01_ClassDemo的第7個方法的名字是notifyAll
+類p106_01_ClassDemo的第8個方法的名字是wait
+類p106_01_ClassDemo的第9個方法的名字是wait
+類p106_01_ClassDemo的第10個方法的名字是wait
+
+d:\git\myHomework\java\schoolbook\ch05>
+
 ============================================================
 ============================================================

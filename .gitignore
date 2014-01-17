@@ -10,3 +10,7 @@ java/*/*/*~
 # 忽略所有~結尾的文件
 editor/*~
 
+# tomcat目錄下
+# 忽略所有~結尾的文件
+# 忽略所有.class文件
+tomcat\*\WEB-INF\classes\*.class

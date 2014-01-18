@@ -1,6 +1,7 @@
 # 根目錄下
 # 忽略所有~結尾的文件
 *~
+*.class
  
 # java目錄下
 java/*/*/*.class
@@ -13,4 +14,4 @@ editor/*~
 # tomcat目錄下
 # 忽略所有~結尾的文件
 # 忽略所有.class文件
-tomcat\*\WEB-INF\classes\*.class
+tomcat/*/WEB-INF/classes/*.class

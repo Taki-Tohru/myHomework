@@ -15,3 +15,5 @@ editor/*~
 # 忽略所有~結尾的文件
 # 忽略所有.class文件
 tomcat/*/WEB-INF/classes/*.class
+tomcat/*/WEB-INF/classes/*~
+tomcat/*/*~

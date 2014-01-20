@@ -1,0 +1,2 @@
+注意
+把這個html文件夾放在上一目錄的WEB-INF裡面的話，訪問JavaServProg/ch01/hello.html會出錯。

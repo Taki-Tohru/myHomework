@@ -1,0 +1,13 @@
+From Book 
+Java Servlet Programming 
+O'Reilly
+
+
+第1個例子
+http://localhost:8080/jspbook/Hello.do
+第2個例子
+http://localhost:8080/jspbook/html/JavaServProg/ch02/hello.html
+第3個例子
+http://localhost:8080/jspbook/html/JavaServProg/ch02/hello2.html
+第4個例子
+http://localhost:8080/jspbook/html/JavaServProg/ch02/hello3.html

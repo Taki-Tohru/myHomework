@@ -1,0 +1,222 @@
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema | 
+| lmy_               | 
+| mysql              | 
+| test               | 
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql> STATUS;
+--------------
+
+Connection id:		1
+Current database:	
+Current user:		root@localhost
+SSL:			Not in use
+Using delimiter:	;
+Server version:		5.0.45-community-nt MySQL Community Edition (GPL)
+Protocol version:	10
+Connection:		localhost via TCP/IP
+Server characterset:	utf8
+Db     characterset:	utf8
+Client characterset:	utf8
+Conn.  characterset:	utf8
+TCP port:		3306
+Uptime:			22 min 25 sec
+
+Threads: 1  Questions: 6  Slow queries: 0  Opens: 12  Flush tables: 1  Open tables: 6  Queries per second avg: 0.004
+--------------
+
+mysql> SHOW DATABASES STATUS LIKE lmy%;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'STATUS LIKE lmy%' at line 1
+mysql> SELECT User, Host FROM mysql.user;
++------+-----------+
+| User | Host      |
++------+-----------+
+| root | localhost | 
++------+-----------+
+1 row in set (0.07 sec)
+
+mysql> GRANT SELECT ON lmy_.* TO 'lmy'@'localhost' IDENTIFIED BY 'shan'
+    -> ;
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> CREATE DATABASE bookstore;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> CREATE TABLE books (
+    -> book_id INT,
+    -> title VARCHAR (50),
+    -> author VARCHAR (50) );
+ERROR 1046 (3D000): No database selected
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema | 
+| bookstore          | 
+| lmy_               | 
+| mysql              | 
+| test               | 
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> USE bookstore;
+Database changed
+mysql> CREATE TABLE books (
+    -> book_id INT,
+    -> title VARCHAR (50),
+    -> author VARCHAR (50) );
+Query OK, 0 rows affected (10.58 sec)
+
+mysql> DESCRIBE books;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| book_id | int(11)     | YES  |     | NULL    |       | 
+| title   | varchar(50) | YES  |     | NULL    |       | 
+| author  | varchar(50) | YES  |     | NULL    |       | 
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.68 sec)
+
+mysql> ALTER TABLE books
+    -> CHANGE COLUMN book_id book_id INT AUTO_INCREMENT PRIMARY KEY,
+    -> CHANGE COLUMN author author_id INT,
+    -> ADD COLUMN description TEXT,
+    -> ADD COLUMN genre ENUM ('novel', 'poetry', 'drama'),
+    -> ADD COLUMN publisher_id INT,
+    -> ADD COLUMN pub_year VARCHAR (4),
+    -> ADD COLUMN isbn VARCHAR(20);
+Query OK, 0 rows affected (0.32 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESCRIBE books;
++--------------+--------------------------------+------+-----+---------+----------------+
+| Field        | Type                           | Null | Key | Default | Extra          |
++--------------+--------------------------------+------+-----+---------+----------------+
+| book_id      | int(11)                        | NO   | PRI | NULL    | auto_increment | 
+| title        | varchar(50)                    | YES  |     | NULL    |                | 
+| author_id    | int(11)                        | YES  |     | NULL    |                | 
+| description  | text                           | YES  |     | NULL    |                | 
+| genre        | enum('novel','poetry','drama') | YES  |     | NULL    |                | 
+| publisher_id | int(11)                        | YES  |     | NULL    |                | 
+| pub_year     | varchar(4)                     | YES  |     | NULL    |                | 
+| isbn         | varchar(20)                    | YES  |     | NULL    |                | 
++--------------+--------------------------------+------+-----+---------+----------------+
+8 rows in set (0.55 sec)
+
+mysql> CREATE TABLE authors (
+    -> author_id INT AUTO_INCREMENT PRIMARY KEY,
+    -> author_last VARCHAR(50),
+    -> author_first VARCHAR(50),
+    -> country VARCHAR(50) );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> DESCRIBE authors;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| author_id    | int(11)     | NO   | PRI | NULL    | auto_increment | 
+| author_last  | varchar(50) | YES  |     | NULL    |                | 
+| author_first | varchar(50) | YES  |     | NULL    |                | 
+| country      | varchar(50) | YES  |     | NULL    |                | 
++--------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.02 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema | 
+| bookstore          | 
+| lmy_               | 
+| mysql              | 
+| test               | 
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> SHOW TABLES;
++---------------------+
+| Tables_in_bookstore |
++---------------------+
+| authors             | 
+| books               | 
++---------------------+
+2 rows in set (0.00 sec)
+
+mysql> SHOW TABLES FROM mysql;
++---------------------------+
+| Tables_in_mysql           |
++---------------------------+
+| columns_priv              | 
+| db                        | 
+| func                      | 
+| help_category             | 
+| help_keyword              | 
+| help_relation             | 
+| help_topic                | 
+| host                      | 
+| proc                      | 
+| procs_priv                | 
+| tables_priv               | 
+| time_zone                 | 
+| time_zone_leap_second     | 
+| time_zone_name            | 
+| time_zone_transition      | 
+| time_zone_transition_type | 
+| user                      | 
++---------------------------+
+17 rows in set (0.01 sec)
+
+mysql> INSERT INTO authors 
+    -> (author_last, author_first, country)
+    -> VALUES('Greene', 'Graham', 'United Kingdom');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT LAST_INSERT_ID();
++------------------+
+| LAST_INSERT_ID() |
++------------------+
+|                1 | 
++------------------+
+1 row in set (0.03 sec)
+
+mysql> INSERT INTO books
+    -> (title, author_id, isbn, genre, pub_year)
+    -> VALUES ('The End of the Affair', 1, '0099478447', 'novel', '1951');
+Query OK, 1 row affected (0.50 sec)
+
+mysql> SELECT * FROM books;
++---------+-----------------------+-----------+-------------+-------+--------------+----------+------------+
+| book_id | title                 | author_id | description | genre | publisher_id | pub_year | isbn       |
++---------+-----------------------+-----------+-------------+-------+--------------+----------+------------+
+|       1 | The End of the Affair |         1 | NULL        | novel |         NULL | 1951     | 0099478447 | 
++---------+-----------------------+-----------+-------------+-------+--------------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT book_id, title, description
+    -> FROM books
+    -> WHERE genre = 'novel';
++---------+-----------------------+-------------+
+| book_id | title                 | description |
++---------+-----------------------+-------------+
+|       1 | The End of the Affair | NULL        | 
++---------+-----------------------+-------------+
+1 row in set (0.02 sec)
+
+mysql> SELECT book_id, title, pub_year,
+    -> CONCAT(author_first, ' ', author_last) AS author
+    -> FROM books
+    -> JOIN authors USING (author_id)
+    -> WHERE author_last = 'Greene';
++---------+-----------------------+----------+---------------+
+| book_id | title                 | pub_year | author        |
++---------+-----------------------+----------+---------------+
+|       1 | The End of the Affair | 1951     | Graham Greene | 
++---------+-----------------------+----------+---------------+
+1 row in set (0.01 sec)
+
+mysql> notee

@@ -1,0 +1,48 @@
+[lmy@localhost functor]$ c++ fpt.cc -o fpt
+[lmy@localhost functor]$ ./fpt 
+
+Executing function 'Replace_A_Switch'
+Switch: 2+5=7
+Switch replaced by function pointer: 2-5=-3
+[lmy@localhost functor]$ 
+
+============================================================
+[lmy@localhost functor]$ g++ fpt2.cc -o fpt2
+fpt2.cc: In function ‘int DoIt(float, char, char)’:
+fpt2.cc:9: 警告：当转换到 ‘int’ (从 ‘float’)时
+fpt2.cc: In function ‘int DoMore(float, char, char)’:
+fpt2.cc:14: 警告：当转换到 ‘int’ (从 ‘float’)时
+fpt2.cc: In member function ‘int TMyClass::DoIt(float, char, char)’:
+fpt2.cc:23: 警告：当转换到 ‘int’ (从 ‘float’)时
+fpt2.cc: In member function ‘int TMyClass::DoMore(float, char, char) const’:
+fpt2.cc:27: 警告：当转换到 ‘int’ (从 ‘float’)时
+[lmy@localhost functor]$ ./fpt2
+Pointer points to TMyClass::DoMore
+DoMore
+DoMore
+TMyClass::DoIt
+TMyClass::DoIt
+13 13 207 207
+[lmy@localhost functor]$ 
+
+============================================================
+[lmy@localhost functor]$ g++ fpt3.cc -o fpt3
+fpt3.cc: In function ‘int DoIt(float, char, char)’:
+fpt3.cc:7: 警告：当转换到 ‘int’ (从 ‘float’)时
+[lmy@localhost functor]$ ./fpt3 
+
+Executing 'Pass_A_Function_Pointer'
+DoIt
+207
+[lmy@localhost functor]$ 
+
+============================================================
+[lmy@localhost functor]$ g++ fpt4.cc -o fpt4
+[lmy@localhost functor]$ ./fpt4 
+
+Executing 'Return_A_Function_Pointer'
+6
+-2
+[lmy@localhost functor]$ 
+
+============================================================

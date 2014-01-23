@@ -1,0 +1,451 @@
+mysql> INSERT INTO books
+    -> (title, author_id, isbn, genre, pub_year)
+    -> VALUE ('Brighton Rock', 1, '0099538955', 'novel', '1957');
+ERROR 1046 (3D000): No database selected
+mysql> USE books;
+ERROR 1049 (42000): Unknown database 'books'
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema | 
+| bookstore          | 
+| lmy_               | 
+| mysql              | 
+| test               | 
++--------------------+
+5 rows in set (0.05 sec)
+
+mysql> USE bookstore;
+Database changed
+mysql> INSERT INTO books
+    -> (title, author_id, isbn, genre, pub_year)
+    -> VALUE ('Brighton Rock', 1, '0099538955', 'novel', '1957');
+Query OK, 1 row affected (0.33 sec)
+
+mysql> SELECT book_id, title, publisher
+    -> FROM books\c
+mysql> SHOW TABLES;
++---------------------+
+| Tables_in_bookstore |
++---------------------+
+| authors             | 
+| books               | 
++---------------------+
+2 rows in set (0.02 sec)
+
+mysql> SHOW lmy_.tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'lmy_.tables' at line 1
+mysql> SHOW TABLES FROM lmy_;
++----------------+
+| Tables_in_lmy_ |
++----------------+
+| lin            | 
++----------------+
+1 row in set (0.13 sec)
+
+mysql> use lmy_;
+Database changed
+mysql> \. d:\mysql_test\scott.sql
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CONSTRAINT PK_DEPT PRIMARY KEY,
+	DNAME VARCHAR(14) ,
+	LOC VARCHAR(13) ) ENGINE=M' at line 2
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CONSTRAINT PK_EMP PRIMARY KEY,
+	ENAME VARCHAR(10),
+	JOB VARCHAR(9),
+	MGR INT(4),' at line 2
+ERROR 1146 (42S02): Table 'lmy_.dept' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.dept' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.dept' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.dept' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%m INT
+	) ENGINE=MyISAM DEFAULT CHARSET=latin1' at line 6
+Query OK, 0 rows affected (0.08 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_lmy_ |
++----------------+
+| lin            | 
+| salgrade       | 
++----------------+
+2 rows in set (0.00 sec)
+
+mysql> DROP salgrade;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'salgrade' at line 1
+mysql> DROP TABLE salgrade;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_lmy_ |
++----------------+
+| lin            | 
++----------------+
+1 row in set (0.00 sec)
+
+mysql> \. d:\mysql_test\scott.sql
+Query OK, 0 rows affected (0.07 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2),
+	COMM INT(7,2),
+	DEPTNO TINYINT(2) CONSTRAINT FK_DEPTNO REFERENCES DEPT)ENGI' at line 7
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1146 (42S02): Table 'lmy_.emp' doesn't exist
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%m INT
+	) ENGINE=MyISAM DEFAULT CHARSET=latin1' at line 6
+Query OK, 0 rows affected (0.06 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+mysql> \. d:\mysql_test\scott.sql
+ERROR 1072 (42000): Key column 'catName' doesn't exist in table
+Query OK, 0 rows affected (0.06 sec)
+
+ERROR 1062 (23000): Duplicate entry '10' for key 1
+ERROR 1062 (23000): Duplicate entry '20' for key 1
+ERROR 1062 (23000): Duplicate entry '30' for key 1
+ERROR 1062 (23000): Duplicate entry '40' for key 1
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+ERROR 1050 (42S01): Table 'salgrade' already exists
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_lmy_ |
++----------------+
+| bonus          | 
+| dept           | 
+| emp            | 
+| lin            | 
+| salgrade       | 
++----------------+
+5 rows in set (0.00 sec)
+
+mysql> DROP TABLE bonus;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DROP TABLE dept;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DROP TABLE emp;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DROP TABLE salgrade;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> \. d:\mysql_test\scott.sql
+Query OK, 0 rows affected (0.06 sec)
+
+Query OK, 0 rows affected (0.06 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected (0.06 sec)
+
+Query OK, 0 rows affected (0.05 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_lmy_ |
++----------------+
+| bonus          | 
+| dept           | 
+| emp            | 
+| lin            | 
+| salgrade       | 
++----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM bonus;
+Empty set (0.02 sec)
+
+mysql> SELECT * FROM dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK | 
+|     20 | RESEARCH   | DALLAS   | 
+|     30 | SALES      | CHICAGO  | 
+|     40 | OPERATIONS | BOSTON   | 
++--------+------------+----------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT * FROM emp;
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800 | NULL |     20 | 
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600 |  300 |     30 | 
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250 |  500 |     30 | 
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975 | NULL |     20 | 
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250 | 1400 |     30 | 
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850 | NULL |     30 | 
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450 | NULL |     10 | 
+|  7788 | SCOTT  | ANALYST   | 7566 | 1987-04-19 | 3000 | NULL |     20 | 
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000 | NULL |     10 | 
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500 |    0 |     30 | 
+|  7876 | ADAMS  | CLERK     | 7788 | 1987-05-23 | 1100 | NULL |     20 | 
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950 | NULL |     30 | 
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000 | NULL |     20 | 
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300 | NULL |     10 | 
++-------+--------+-----------+------+------------+------+------+--------+
+14 rows in set (0.02 sec)
+
+mysql> SELECT * FROM salgrade;
++-------+-------+-------+
+| GRADE | LOSAL | HISAL |
++-------+-------+-------+
+|     1 |   700 |  1200 | 
+|     2 |  1201 |  1400 | 
+|     3 |  1401 |  2000 | 
+|     4 |  2001 |  3000 | 
+|     5 |  3001 |  9999 | 
++-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> SHOW TABLES FROM bookstore;
++---------------------+
+| Tables_in_bookstore |
++---------------------+
+| authors             | 
+| books               | 
++---------------------+
+2 rows in set (0.00 sec)
+
+mysql> DESCRIBE bookstore.authors;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| author_id    | int(11)     | NO   | PRI | NULL    | auto_increment | 
+| author_last  | varchar(50) | YES  |     | NULL    |                | 
+| author_first | varchar(50) | YES  |     | NULL    |                | 
+| country      | varchar(50) | YES  |     | NULL    |                | 
++--------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.13 sec)
+
+mysql> DESCRIBE bookstore.books;
++--------------+--------------------------------+------+-----+---------+----------------+
+| Field        | Type                           | Null | Key | Default | Extra          |
++--------------+--------------------------------+------+-----+---------+----------------+
+| book_id      | int(11)                        | NO   | PRI | NULL    | auto_increment | 
+| title        | varchar(50)                    | YES  |     | NULL    |                | 
+| author_id    | int(11)                        | YES  |     | NULL    |                | 
+| description  | text                           | YES  |     | NULL    |                | 
+| genre        | enum('novel','poetry','drama') | YES  |     | NULL    |                | 
+| publisher_id | int(11)                        | YES  |     | NULL    |                | 
+| pub_year     | varchar(4)                     | YES  |     | NULL    |                | 
+| isbn         | varchar(20)                    | YES  |     | NULL    |                | 
++--------------+--------------------------------+------+-----+---------+----------------+
+8 rows in set (0.04 sec)
+
+mysql> SELECT COUNT(*)
+    -> FROM emp
+    -> JOIN dept USING (DEPTNO)
+    -> WHERE DNAME='SALES';
++----------+
+| COUNT(*) |
++----------+
+|        6 | 
++----------+
+1 row in set (0.04 sec)
+
+mysql> SELECT SUM (SAL) AS 'Research Sallary'
+    -> FROM emp
+    -> JOIN dept USING (DEPTNO)
+    -> WHERE DNAME = 'RESEARCH';
+ERROR 1305 (42000): FUNCTION lmy_.SUM does not exist
+mysql> ED
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ED' at line 1
+mysql> SELECT SUM(SAL) AS 'Research Sallary'
+    -> FROM emp
+    -> JOIN dept USING (DEPTNO)
+    -> WHERE DNAME = 'RESEARCH';
++------------------+
+| Research Sallary |
++------------------+
+|            10875 | 
++------------------+
+1 row in set (0.04 sec)
+
+mysql> SELECT HIREDATE AS 'Hire Date'
+    -> FROM emp
+    -> WHERE EMPNO = 7698;
++------------+
+| Hire Date  |
++------------+
+| 1981-05-01 | 
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CONCAT(MONTHNAME(HIREDATE), ' ' ,
+    -> DAYOFMONTH(HIREDATE), ', ',
+    -> YEAR(HIREDATE)) AS 'Hire Date'
+    -> FROM emp
+    -> WHERE EMPNO = 7689;
+Empty set (0.06 sec)
+
+mysql> SELECT CONCAT(MONTHNAME(HIREDATE), ' ' ,
+    -> DAYOFMONTH(HIREDATE), ', ',
+    -> YEAR(HIREDATE)) AS 'Hire Date'
+    -> FROM emp
+    -> WHERE EMPNO = 7698;
++-------------+
+| Hire Date   |
++-------------+
+| May 1, 1981 | 
++-------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT DATE_FORMAT(HIREDATE, "%M %d, %Y")
+    -> AS 'Hire Date'
+    -> FROM emp
+    -> WHERE EMPNO = 7689;
+Empty set (0.00 sec)
+
+mysql> SELECT DATE_FORMAT(HIREDATE, "%M %d, %Y")
+    -> AS 'Hire Date'
+    -> FROM emp
+    -> WHERE EMPNO = 7698;
++--------------+
+| Hire Date    |
++--------------+
+| May 01, 1981 | 
++--------------+
+1 row in set (0.00 sec)
+
+mysql> \t

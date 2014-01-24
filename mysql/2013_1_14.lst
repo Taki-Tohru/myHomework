@@ -1,0 +1,215 @@
+mysql> \t
+mysql> help contents
+You asked for help about help category: "Contents"
+For more information, type 'help <item>', where <item> is one of the following
+categories:
+   Account Management
+   Administration
+   Data Definition
+   Data Manipulation
+   Data Types
+   Functions
+   Functions and Modifiers for Use with GROUP BY
+   Geographic Features
+   Language Structure
+   Storage Engines
+   Stored Routines
+   Table Maintenance
+   Transactions
+   Triggers
+
+mysql> \h
+
+For information about MySQL products and services, visit:
+   http://www.mysql.com/
+For developer information, including the MySQL Reference Manual, visit:
+   http://dev.mysql.com/
+To buy MySQL Network Support, training, or other products, visit:
+   https://shop.mysql.com/
+
+List of all MySQL commands:
+Note that all text commands must be first on line and end with ';'
+?         (\?) Synonym for `help'.
+clear     (\c) Clear command.
+connect   (\r) Reconnect to the server. Optional arguments are db and host.
+delimiter (\d) Set statement delimiter. NOTE: Takes the rest of the line as new delimiter.
+ego       (\G) Send command to mysql server, display result vertically.
+exit      (\q) Exit mysql. Same as quit.
+go        (\g) Send command to mysql server.
+help      (\h) Display this help.
+notee     (\t) Don't write into outfile.
+print     (\p) Print current command.
+prompt    (\R) Change your mysql prompt.
+quit      (\q) Quit mysql.
+rehash    (\#) Rebuild completion hash.
+source    (\.) Execute an SQL script file. Takes a file name as an argument.
+status    (\s) Get status information from the server.
+tee       (\T) Set outfile [to_outfile]. Append everything into given outfile.
+use       (\u) Use another database. Takes database name as argument.
+charset   (\C) Switch to another charset. Might be needed for processing binlog with multi-byte charsets.
+warnings  (\W) Show warnings after every statement.
+nowarning (\w) Don't show warnings after every statement.
+
+For server side help, type 'help contents'
+
+mysql> ? triggers
+Name: 'SHOW TRIGGERS'
+Description:
+Syntax:
+SHOW TRIGGERS [FROM db_name] [LIKE expr]
+
+SHOW TRIGGERS lists the triggers currently defined on the MySQL server.
+This statement requires the SUPER privilege. It was implemented in
+MySQL 5.0.10.
+
+For the trigger ins_sum as defined in
+http://dev.mysql.com/doc/refman/5.0/en/using-triggers.html, the output
+of this statement is as shown here:
+
+mysql> SHOW TRIGGERS LIKE 'acc%'\G
+*************************** 1. row ***************************
+  Trigger: ins_sum
+    Event: INSERT
+    Table: account
+Statement: SET @sum = @sum + NEW.amount
+   Timing: BEFORE
+  Created: NULL
+ sql_mode:
+  Definer: myname@localhost
+
+URL: http://dev.mysql.com/doc/refman/5.0/en/show-triggers.html
+
+
+mysql> \u lmy_
+Database changed
+mysql> SET @EMPNO =
+    ->     (SELECT EMPNO FROM emp
+    ->      WHERE JOB = 'CLERK'
+    ->      AND ENAME = 'SMITH');
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> SELECT * FROM emp
+    -> WHERE EMPNO = @EMPNO;
++-------+-------+-------+------+------------+------+------+--------+
+| EMPNO | ENAME | JOB   | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+-------+-------+------+------------+------+------+--------+
+|  7369 | SMITH | CLERK | 7902 | 1980-12-17 |  800 | NULL |     20 | 
++-------+-------+-------+------+------------+------+------+--------+
+1 row in set (0.01 sec)
+
+mysql> SELECT EMPNO,
+    -> CONCAT(ENAME, ' is ', JOB) AS EMPLOYEE_STATUS
+    -> FROM emp
+    -> JOIN dept USING (DEPTNO)
+    -> WHERE DNAME LIKE '%ACC%'; 
++-------+-------------------+
+| EMPNO | EMPLOYEE_STATUS   |
++-------+-------------------+
+|  7782 | CLARK is MANAGER  | 
+|  7839 | KING is PRESIDENT | 
+|  7934 | MILLER is CLERK   | 
++-------+-------------------+
+3 rows in set (0.18 sec)
+
+mysql> SELECT EMPNO, ENAME
+    -> FROM emp
+    -> WHERE MGR = 7698
+    -> AND ENAME LIKE '%A%'
+    -> OR MGR = 7698
+    -> AND ENAME LIKE '%W%';
++-------+--------+
+| EMPNO | ENAME  |
++-------+--------+
+|  7499 | ALLEN  | 
+|  7521 | WARD   | 
+|  7654 | MARTIN | 
+|  7900 | JAMES  | 
++-------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT EMPNO, ENAME
+    -> FROM emp
+    -> WHERE MGR = 7698
+    -> AND ENAME LIKE '%AL%'
+    -> OR MGR = 7698
+    -> AND ENAME LIKE '%WA%';
++-------+-------+
+| EMPNO | ENAME |
++-------+-------+
+|  7499 | ALLEN | 
+|  7521 | WARD  | 
++-------+-------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE DATABASE scott;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> use scott
+Database changed
+mysql> \. d:\mysql_test\scott.sql
+Query OK, 0 rows affected (0.17 sec)
+
+Query OK, 0 rows affected (0.06 sec)
+
+Query OK, 1 row affected (0.02 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW TABLES;
++-----------------+
+| Tables_in_scott |
++-----------------+
+| bonus           | 
+| dept            | 
+| emp             | 
+| salgrade        | 
++-----------------+
+4 rows in set (0.05 sec)
+
+mysql> \t

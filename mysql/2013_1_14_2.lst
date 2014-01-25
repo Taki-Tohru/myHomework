@@ -1,0 +1,94 @@
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema | 
+| bookstore          | 
+| lmy_               | 
+| mysql              | 
+| scott              | 
+| test               | 
++--------------------+
+6 rows in set (0.03 sec)
+
+mysql> \u lmy_
+Database changed
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_lmy_ |
++----------------+
+| bonus          | 
+| dept           | 
+| emp            | 
+| lin            | 
+| salgrade       | 
++----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM salgrade;
++-------+-------+-------+
+| GRADE | LOSAL | HISAL |
++-------+-------+-------+
+|     1 |   700 |  1200 | 
+|     2 |  1201 |  1400 | 
+|     3 |  1401 |  2000 | 
+|     4 |  2001 |  3000 | 
+|     5 |  3001 |  9999 | 
++-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> LOAD DATA INFILE 'D:\mysql_test\sqlgrade.txt' REPLACE INTO TABLE salgrade
+    -> FIELDS TERMINATED BY '|'
+    -> LINES TERMINATED BY '\r\n'
+    -> TEXT_FIELDS(col1, col2, col3)
+    -> SET GRADE = col1, LOSAL = col2, HISAL = col3
+    -> IGNORE 1 LINES;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TEXT_FIELDS(col1, col2, col3)
+SET GRADE = col1, LOSAL = col2, HISAL = col3
+IGNOR' at line 4
+mysql> SHOW ERRORS;
++-------+------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                                                                                                                                                            |
++-------+------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Error | 1064 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TEXT_FIELDS(col1, col2, col3)
+SET GRADE = col1, LOSAL = col2, HISAL = col3
+IGNOR' at line 4 | 
++-------+------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.03 sec)
+
+mysql> LOAD DATA INFILE 'D:\mysql_test\sqlgrade.txt' REPLACE INTO TABLE salgrade
+    -> FIELDS TERMINATED BY '|'
+    -> LINES TERMINATED BY '\r\n'
+    -> IGNORE 1 LINES
+    ->   (GRADE, LOSAL, HISAL);
+ERROR 29 (HY000): File 'D:mysql_testsqlgrade.txt' not found (Errcode: 2)
+mysql>  LOAD DATA INFILE 'D:/mysql_test/sqlgrade.txt' REPLACE INTO TABLE salgrade
+    ->  FIELDS TERMINATED BY '|'
+    ->  LINES TERMINATED BY '\r\n'
+    ->  IGNORE 1 LINES
+    ->    (GRADE, LOSAL, HISAL);
+ERROR 29 (HY000): File 'D:\mysql_test\sqlgrade.txt' not found (Errcode: 2)
+mysql>  LOAD DATA INFILE 'D:/mysql_test/salgrade.txt' REPLACE INTO TABLE salgrade
+    -> FIELDS TERMINATED BY '|'
+    -> LINES TERMINATED BY '\r\n'
+    -> IGNORE 1 LINES
+    ->   (GRADE, LOSAL, HISAL);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> SELECT * FROM salgrade;
++-------+-------+-------+
+| GRADE | LOSAL | HISAL |
++-------+-------+-------+
+|     1 |   700 |  1200 | 
+|     2 |  1201 |  1400 | 
+|     3 |  1401 |  2000 | 
+|     4 |  2001 |  3000 | 
+|     5 |  3001 |  9999 | 
+|     6 | 10000 | 12000 | 
+|     7 | 12001 | 14000 | 
+|     8 | 14001 | 17000 | 
++-------+-------+-------+
+8 rows in set (0.00 sec)
+
+mysql> \t

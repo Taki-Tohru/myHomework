@@ -1,0 +1,194 @@
+mysql> MySQL In a Nutshell   chpter 4 function\c
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema | 
+| bookstore          | 
+| lmy_               | 
+| mysql              | 
+| scott              | 
+| test               | 
++--------------------+
+6 rows in set (0.13 sec)
+
+mysql> SELECT * FROM emp;
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800 | NULL |     20 | 
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600 |  300 |     30 | 
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250 |  500 |     30 | 
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975 | NULL |     20 | 
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250 | 1400 |     30 | 
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850 | NULL |     30 | 
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450 | NULL |     10 | 
+|  7788 | SCOTT  | ANALYST   | 7566 | 1987-04-19 | 3000 | NULL |     20 | 
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000 | NULL |     10 | 
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500 |    0 |     30 | 
+|  7876 | ADAMS  | CLERK     | 7788 | 1987-05-23 | 1100 | NULL |     20 | 
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950 | NULL |     30 | 
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000 | NULL |     20 | 
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300 | NULL |     10 | 
++-------+--------+-----------+------+------------+------+------+--------+
+14 rows in set (0.11 sec)
+
+mysql> SELECT AES_DECRYPT(JOB, 'my_password') AS job
+    -> FROM emp
+    -> WHERE EMPNO=7499;
++------+
+| job  |
++------+
+| NULL | 
++------+
+1 row in set (0.05 sec)
+
+mysql> SELECT JOB
+    ->  FROM emp
+    ->  WHERE EMPNO=7499;
++----------+
+| JOB      |
++----------+
+| SALESMAN | 
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT AES_DECRYPT('JOB', 'my_password');
++-----------------------------------+
+| AES_DECRYPT('JOB', 'my_password') |
++-----------------------------------+
+| NULL                              | 
++-----------------------------------+
+1 row in set (0.00 sec)
+
+mysql>  SELECT * FROM emp;
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800 | NULL |     20 | 
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600 |  300 |     30 | 
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250 |  500 |     30 | 
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975 | NULL |     20 | 
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250 | 1400 |     30 | 
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850 | NULL |     30 | 
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450 | NULL |     10 | 
+|  7788 | SCOTT  | ANALYST   | 7566 | 1987-04-19 | 3000 | NULL |     20 | 
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000 | NULL |     10 | 
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500 |    0 |     30 | 
+|  7876 | ADAMS  | CLERK     | 7788 | 1987-05-23 | 1100 | NULL |     20 | 
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950 | NULL |     30 | 
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000 | NULL |     20 | 
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300 | NULL |     10 | 
++-------+--------+-----------+------+------------+------+------+--------+
+14 rows in set (0.00 sec)
+
+mysql> UPDATE emp
+    -> SET ENAME = AES_ENCRYPT('')\c
+mysql> INSERT INTO emp VALUES(8000, 'lin', 'PRESIDENT', NULL, '1989-06-01', 6000, NULL, 10);
+Query OK, 1 row affected (0.50 sec)
+
+mysql> UPDATE emp
+    -> SET ENAME = AES_ENCRYPT('LinShSh', 'my_password')
+    -> WHERE EMPNO=8000;
+ERROR 1406 (22001): Data too long for column 'ENAME' at row 1
+mysql> DESCRIBE emp;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| EMPNO    | int(4)      | NO   | PRI |         |       | 
+| ENAME    | varchar(10) | YES  | MUL | NULL    |       | 
+| JOB      | varchar(9)  | YES  |     | NULL    |       | 
+| MGR      | int(4)      | YES  |     | NULL    |       | 
+| HIREDATE | date        | YES  |     | NULL    |       | 
+| SAL      | int(7)      | YES  |     | NULL    |       | 
+| COMM     | int(7)      | YES  |     | NULL    |       | 
+| DEPTNO   | tinyint(2)  | YES  | MUL | NULL    |       | 
++----------+-------------+------+-----+---------+-------+
+8 rows in set (0.05 sec)
+
+mysql> ALTER TABLE emp
+    -> CHANGE COLUMN ENAME VARCHAR(256)\c
+mysql> ALTER TABLE emp
+    -> CHANGE COLUMN JOB VARCHAR(256);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'VARCHAR(256)' at line 2
+mysql> SET @PWD=AES_ENCRYPT('LinShSh', 'LMY');
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT @PWD;
++------------------+
+| @PWD             |
++------------------+
+| QuØDwœîg‰á‘iÈÏ         | 
++------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT AES_DECRYPT(@PWD,'LMY') AS decrypt_;
++----------+
+| decrypt_ |
++----------+
+| LinShSh  | 
++----------+
+1 row in set (0.00 sec)
+
+mysql> STATUS;
+--------------
+
+Connection id:		1
+Current database:	lmy_
+Current user:		root@localhost
+SSL:			Not in use
+Using delimiter:	;
+Server version:		5.0.45-community-nt MySQL Community Edition (GPL)
+Protocol version:	10
+Connection:		localhost via TCP/IP
+Server characterset:	utf8
+Db     characterset:	utf8
+Client characterset:	utf8
+Conn.  characterset:	utf8
+TCP port:		3306
+Uptime:			2 hours 4 min 25 sec
+
+Threads: 1  Questions: 21  Slow queries: 0  Opens: 13  Flush tables: 1  Open tables: 0  Queries per second avg: 0.003
+--------------
+
+mysql> SELECT SYSTEM_USER(),SESSION_USER(),USER();
++----------------+----------------+----------------+
+| SYSTEM_USER()  | SESSION_USER() | USER()         |
++----------------+----------------+----------------+
+| root@localhost | root@localhost | root@localhost | 
++----------------+----------------+----------------+
+1 row in set (0.00 sec)
+
+mysql> SET NAMES 'latin1';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> STATUS;
+--------------
+
+Connection id:		1
+Current database:	lmy_
+Current user:		root@localhost
+SSL:			Not in use
+Using delimiter:	;
+Server version:		5.0.45-community-nt MySQL Community Edition (GPL)
+Protocol version:	10
+Connection:		localhost via TCP/IP
+Server characterset:	utf8
+Db     characterset:	utf8
+Client characterset:	latin1
+Conn.  characterset:	latin1
+TCP port:		3306
+Uptime:			2 hours 7 min 4 sec
+
+Threads: 1  Questions: 25  Slow queries: 0  Opens: 13  Flush tables: 1  Open tables: 0  Queries per second avg: 0.003
+--------------
+
+mysql>  SELECT @PWD;
++------------------+
+| @PWD             |
++------------------+
+| QuØDwœîg‰á‘iÈÏ         | 
++------------------+
+1 row in set (0.00 sec)
+
+mysql> \t

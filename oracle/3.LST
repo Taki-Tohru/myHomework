@@ -1,0 +1,269 @@
+SQL> BEGIN
+  2      DBMS_OUTPUT.PUT_LINE('是否存在该部门： '||EMP_DEPT_PACK.DEPT_FUN(100);
+  3  END;
+  4  /
+    DBMS_OUTPUT.PUT_LINE('是否存在该部门： '||EMP_DEPT_PACK.DEPT_FUN(100);
+                                                                         *
+第 2 行出现错误: 
+ORA-06550: 第 2 行, 第 74 列: 
+PLS-00103: 出现符号 ";"在需要下列之一时： 
+. ( ) , * % & = - + < / > at 
+in is mod remainder not rem => <an exponent (**)> 
+<> or != or ~= >= <= <> and or like like2 like4 likec as 
+between from using || member submultiset
+符号 ")" 被替换为 ";" 后继续。 
+
+
+SQL> ED
+已写入 file afiedt.buf
+
+  1  BEGIN
+  2      DBMS_OUTPUT.PUT_LINE('是否存在该部门： '||EMP_DEPT_PACK.DEPT_FUN(100));
+  3* END;
+SQL> /
+    DBMS_OUTPUT.PUT_LINE('是否存在该部门： '||EMP_DEPT_PACK.DEPT_FUN(100));
+                         *
+第 2 行出现错误: 
+ORA-06550: 第 2 行, 第 26 列: 
+PLS-00306: 调用 '||' 时参数个数或类型错误
+ORA-06550: 第 2 行, 第 5 列: 
+PL/SQL: Statement ignored 
+
+
+SQL>  CREATE OR REPLACE FUNCTION DEPT_FUN(
+  2          V_TEMP IN DEPT.DEPTNO%TYPE;
+  3      )
+  4      RETURN BOOLEAN
+  5      IS
+  6      V_DEPTNO DEPT.DEPTNO%TYPE;
+  7      BEGIN
+  8          SELECT DEPTNO INTO V_DEPTNO
+  9          FROM DEPT
+ 10         WHERE DEPTNO=V_TEMP;
+ 11         RETURN TRUE;
+ 12     EXCEPTION
+ 13         WHEN NO_DATA_FOUND THEN
+ 14             RETURN FALSE;
+ 15     END DEPT_FUN;
+ 16  /
+
+警告: 创建的函数带有编译错误。
+
+SQL> SHOW ERROR;
+FUNCTION DEPT_FUN 出现错误: 
+
+LINE/COL ERROR                                                                                                                                                                                                                                                                                              
+-------- -----------------------------------------------------------------                                                                                                                                                                                                                                  
+2/35     PLS-00103: 出现符号 ";"在需要下列之一时：                                                                                                                                                                                                                                                          
+         := ) , default character                                                                                                                                                                                                                                                                           
+         符号 ";" 被忽略。                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                            
+SQL> ED
+已写入 file afiedt.buf
+
+  1   CREATE OR REPLACE FUNCTION DEPT_FUN(
+  2          V_TEMP IN DEPT.DEPTNO%TYPE
+  3      )
+  4      RETURN BOOLEAN
+  5      IS
+  6      V_DEPTNO DEPT.DEPTNO%TYPE;
+  7      BEGIN
+  8          SELECT DEPTNO INTO V_DEPTNO
+  9          FROM DEPT
+ 10         WHERE DEPTNO=V_TEMP;
+ 11         RETURN TRUE;
+ 12     EXCEPTION
+ 13         WHEN NO_DATA_FOUND THEN
+ 14             RETURN FALSE;
+ 15*    END DEPT_FUN;
+SQL> /
+
+函数已创建。
+
+SQL> BEGIN
+  2       IF DEPT_FUN(100)=TRUE THEN
+  3           DBMS_OUTPUT.PUT_LINE('部门存在');
+  4       ELSE
+  5           DBMS_OUTPUT.PUT_LINE('部门不存在');
+  6       END IF;
+  7   END;
+  8  /
+部门不存在                                                                                                                                                                                                                                                                                                  
+
+PL/SQL 过程已成功完成。
+
+SQL> ED
+已写入 file afiedt.buf
+
+  1  BEGIN
+  2       IF DEPT_FUN(50)=TRUE THEN
+  3           DBMS_OUTPUT.PUT_LINE('部门存在');
+  4       ELSE
+  5           DBMS_OUTPUT.PUT_LINE('部门不存在');
+  6       END IF;
+  7*  END;
+SQL> /
+部门存在                                                                                                                                                                                                                                                                                                    
+
+PL/SQL 过程已成功完成。
+
+SQL> CREATE OR REPLACE PACKAGE EMP_DEPT_PACK IS
+  2  PROCEDURE INSERT_DEPT
+  3     (
+  4         V_DEPTNO IN DEPT.DEPTNO%TYPE,
+  5         V_DNAME IN DEPT.DNAME%TYPE
+  6     );
+  7  PROCEDURE UPDATE_DEPT
+  8     (
+  9         V_DEPTNO DEPT.DEPTNO%TYPE,
+ 10         V_NEW DEPT.DNAME%TYPE
+ 11     );
+ 12  FUNCTION DEPT_FUN(
+ 13          V_TEMP IN DEPT.DEPTNO%TYPE
+ 14      )
+ 15  RETURN BOOLEAN;
+ 16  PROCEDURE ADD_EMP
+ 17  (
+ 18      V_EMPNO IN EMP.EMPNO%TYPE,
+ 19      V_ENAME IN EMP.ENAME%TYPE,
+ 20      V_JOB IN EMP.JOB%TYPE DEFAULT 'SALESMAN',
+ 21      V_MGR IN EMP.MGR%TYPE DEFAULT 7698,
+ 22      V_HIREDATE IN EMP.HIREDATE%TYPE DEFAULT '17-12月-80',
+ 23      V_SAL IN EMP.SAL%TYPE DEFAULT 1500,
+ 24      V_COMM IN EMP.COMM%TYPE DEFAULT 0,
+ 25      V_DEPTNO IN EMP.DEPTNO%TYPE
+ 26  );
+ 27  END EMP_DEPT_PACK;
+ 28  /
+
+程序包已创建。
+
+SQL> CREATE OR REPLACE PACKAGE BODY EMP_DEPT_PACK IS
+  2  
+  3      PROCEDURE INSERT_DEPT
+  4     (
+  5         V_DEPTNO IN DEPT.DEPTNO%TYPE,
+  6         V_DNAME IN DEPT.DNAME%TYPE
+  7     )
+  8     AS
+  9     BEGIN
+ 10         INSERT INTO DEPT(DEPTNO,DNAME)
+ 11         VALUES(V_DEPTNO,V_DNAME);
+ 12    EXCEPTION
+ 13    WHEN DUP_VAL_ON_INDEX THEN
+ 14        DBMS_OUTPUT.PUT_LINE('部门号不可重复！');
+ 15    END INSERT_DEPT;
+ 16  
+ 17      PROCEDURE UPDATE_DEPT
+ 18     (
+ 19         V_DEPTNO DEPT.DEPTNO%TYPE,
+ 20         V_NEW DEPT.DNAME%TYPE
+ 21     )
+ 22     IS
+ 23         V_TEMP DEPT.DNAME%TYPE;
+ 24     BEGIN
+ 25         SELECT DNAME INTO V_TEMP FROM DEPT WHERE DEPTNO=V_DEPTNO;
+ 26         UPDATE DEPT
+ 27         SET DNAME=V_NEW
+ 28         WHERE DEPTNO=V_DEPTNO;
+ 29         DBMS_OUTPUT.PUT_LINE('修改成功');
+ 30     EXCEPTION
+ 31     WHEN NO_DATA_FOUND THEN
+ 32         DBMS_OUTPUT.PUT_LINE('部门号不存在！');
+ 33     END UPDATE_DEPT;
+ 34  
+ 35      FUNCTION DEPT_FUN(
+ 36          V_TEMP IN DEPT.DEPTNO%TYPE
+ 37      )
+ 38      RETURN BOOLEAN
+ 39      IS
+ 40      V_DEPTNO DEPT.DEPTNO%TYPE;
+ 41      BEGIN
+ 42          SELECT DEPTNO INTO V_DEPTNO
+ 43          FROM DEPT
+ 44         WHERE DEPTNO=V_TEMP;
+ 45         RETURN TRUE;
+ 46     EXCEPTION
+ 47         WHEN NO_DATA_FOUND THEN
+ 48             RETURN FALSE;
+ 49     END DEPT_FUN;
+ 50  
+ 51      PROCEDURE ADD_EMP
+ 52  (
+ 53      V_EMPNO IN EMP.EMPNO%TYPE,
+ 54      V_ENAME IN EMP.ENAME%TYPE,
+ 55      V_JOB IN EMP.JOB%TYPE DEFAULT 'SALESMAN',
+ 56      V_MGR IN EMP.MGR%TYPE DEFAULT 7698,
+ 57      V_HIREDATE IN EMP.HIREDATE%TYPE DEFAULT '17-12月-80',
+ 58      V_SAL IN EMP.SAL%TYPE DEFAULT 1500,
+ 59      V_COMM IN EMP.COMM%TYPE DEFAULT 0,
+ 60      V_DEPTNO IN EMP.DEPTNO%TYPE
+ 61  )
+ 62  IS
+ 63      E_NO_DEPTNO EXCEPTION;
+ 64  BEGIN
+ 65      CASE
+ 66      WHEN DEPT_FUN(V_DEPTNO) =TRUE THEN
+ 67          INSERT INTO EMP (EMPNO,ENAME,DEPTNO)
+ 68          VALUES (V_EMPNO,V_ENAME,V_DEPTNO);
+ 69          DBMS_OUTPUT.PUT_LINE('插入成功');
+ 70      ELSE
+ 71          RAISE E_NO_DEPTNO;
+ 72      END CASE;
+ 73      EXCEPTION
+ 74      WHEN E_NO_DEPTNO THEN
+ 75          DBMS_OUTPUT.PUT_LINE('插入的部门号不存在');
+ 76  END;
+ 77  
+ 78  END EMP_DEPT_PACK;
+ 79  /
+
+程序包体已创建。
+
+SQL> BEGIN
+  2       IF EMP_DEPT_PACK.DEPT_FUN(50)=TRUE THEN
+  3           DBMS_OUTPUT.PUT_LINE('部门存在');
+  4       ELSE
+  5           DBMS_OUTPUT.PUT_LINE('部门不存在');
+  6       END IF;
+  7   END;
+  8  /
+部门存在                                                                                                                                                                                                                                                                                                    
+
+PL/SQL 过程已成功完成。
+
+SQL> ED
+已写入 file afiedt.buf
+
+  1  BEGIN
+  2       IF EMP_DEPT_PACK.DEPT_FUN(100)=TRUE THEN
+  3           DBMS_OUTPUT.PUT_LINE('部门存在');
+  4       ELSE
+  5           DBMS_OUTPUT.PUT_LINE('部门不存在');
+  6       END IF;
+  7*  END;
+SQL> /
+部门不存在                                                                                                                                                                                                                                                                                                  
+
+PL/SQL 过程已成功完成。
+
+SQL> DROP FUNCTION DEPT_FUN;
+
+函数已删除。
+
+SQL> DROP PROCDURE ADD_EMP;
+DROP PROCDURE ADD_EMP
+     *
+第 1 行出现错误: 
+ORA-00950: 无效 DROP 选项 
+
+
+SQL> DROP PROCEDURE ADD_EMP;
+
+过程已删除。
+
+SQL> DROP PACKAGE EMP_DEPT_PACK;
+
+程序包已删除。
+
+SQL> spool off

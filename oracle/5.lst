@@ -1,0 +1,349 @@
+SQL> CREATE VIEW EMP_VIEW AS
+  2      SELECT EMPNO,ENAME,SAL,DNAME FROM EMP,DEPT
+  3      WHERE EMP.DEPTNO=DEPT.DEPTNO;
+CREATE VIEW EMP_VIEW AS
+            *
+第 1 行出现错误: 
+ORA-01031: 权限不足 
+
+
+SQL> SELECT USER FROM DUAL;
+
+USER                                                                            
+------------------------------                                                  
+SCOTT                                                                           
+
+SQL> CREATE VIEW EMP_VIEW AS
+  2      SELECT EMPNO,ENAME,SAL,DNAME FROM EMP,DEPT
+  3      WHERE EMP.DEPTNO=DEPT.DEPTNO;
+
+视图已创建。
+
+SQL> SELECT * FROM EMP_VIEW;
+
+     EMPNO ENAME             SAL DNAME                                          
+---------- ---------- ---------- --------------                                 
+      9000 JOB                   PRINT                                          
+      9001 JOB                   PRINT                                          
+      7369 SMITH             920 RESEARCH                                       
+      7499 ALLEN            1680 SALES                                          
+      7521 WARD             1375 SALES                                          
+      7566 JONES         3123.75 RESEARCH                                       
+      7654 MARTIN           1375 SALES                                          
+      7698 BLAKE          2992.5 SALES                                          
+      7782 CLARK          2572.5 ACCOUNTING                                     
+      7788 SCOTT            3000 RESEARCH                                       
+      7839 KING             5000 ACCOUNTING                                     
+
+     EMPNO ENAME             SAL DNAME                                          
+---------- ---------- ---------- --------------                                 
+      7844 TURNER           1575 SALES                                          
+      7876 ADAMS            1210 RESEARCH                                       
+      7900 JAMES          1092.5 SALES                                          
+      7902 FORD             3000 RESEARCH                                       
+      7934 MILLER           1430 ACCOUNTING                                     
+
+已选择16行。
+
+SQL> CREATE OR REPLACE TRIGGER EMP_VIEW_CHANGE
+  2      INSTEAD OF INSERT ON EMP_VIEW
+  3      FOR EACH ROW
+  4  DECLARE
+  5      V_COUNTER INT;
+  6      V_MAX_DEPTNO DEPT.DEPTNO%TYPE;
+  7  BEGIN
+  8      SELECT COUNT(DNAME),MAX(DEPTNO) INTO V_COUNTER,V_MAX_DEPTNO FROM DEPT
+  9      WHERE DNAME= :NEW.DEPTNAME;
+ 10      IF V_COUNTER=0 THEN
+ 11          INSERT INTO DEPT(DEPTNO,DNAME) VALUES(V_MAX_DEPTNO+1,:NEW.DNAME);
+ 12      END IF;
+ 13  
+ 14  END;
+ 15  /
+
+警告: 创建的触发器带有编译错误。
+
+SQL> SHOW ERROR
+TRIGGER EMP_VIEW_CHANGE 出现错误: 
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+6/18     PLS-00049: 错误的赋值变量 'NEW.DEPTNAME'                               
+SQL> ED
+已写入 file afiedt.buf
+
+  1  CREATE OR REPLACE TRIGGER EMP_VIEW_CHANGE
+  2      INSTEAD OF INSERT ON EMP_VIEW
+  3      FOR EACH ROW
+  4  DECLARE
+  5      V_COUNTER INT;
+  6      V_MAX_DEPTNO DEPT.DEPTNO%TYPE;
+  7  BEGIN
+  8      SELECT COUNT(DNAME),MAX(DEPTNO) INTO V_COUNTER,V_MAX_DEPTNO FROM DEPT
+  9      WHERE DNAME= :NEW.DNAME;
+ 10      IF V_COUNTER=0 THEN
+ 11          INSERT INTO DEPT(DEPTNO,DNAME) VALUES(V_MAX_DEPTNO+1,:NEW.DNAME);
+ 12      END IF;
+ 13* END;
+ 14  /
+
+触发器已创建
+
+SQL> SELECT * FROM EMP
+  2  ;
+
+     EMPNO ENAME      JOB              MGR HIREDATE              SAL       COMM 
+---------- ---------- --------- ---------- -------------- ---------- ---------- 
+    DEPTNO                                                                      
+----------                                                                      
+      9000 JOB                                                                  
+        50                                                                      
+                                                                                
+      9001 JOB                                                                  
+        50                                                                      
+                                                                                
+      7369 SMITH      CLERK           7902 17-12月-80            920            
+        20                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE              SAL       COMM 
+---------- ---------- --------- ---------- -------------- ---------- ---------- 
+    DEPTNO                                                                      
+----------                                                                      
+      7499 ALLEN      SALESMAN        7698 20-2月 -81           1680        300 
+        30                                                                      
+                                                                                
+      7521 WARD       SALESMAN        7698 22-2月 -81           1375        500 
+        30                                                                      
+                                                                                
+      7566 JONES      MANAGER         7839 02-4月 -81        3123.75            
+        20                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE              SAL       COMM 
+---------- ---------- --------- ---------- -------------- ---------- ---------- 
+    DEPTNO                                                                      
+----------                                                                      
+      7654 MARTIN     SALESMAN        7698 28-9月 -81           1375       1400 
+        30                                                                      
+                                                                                
+      7698 BLAKE      MANAGER         7839 01-5月 -81         2992.5            
+        30                                                                      
+                                                                                
+      7782 CLARK      MANAGER         7839 09-6月 -81         2572.5            
+        10                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE              SAL       COMM 
+---------- ---------- --------- ---------- -------------- ---------- ---------- 
+    DEPTNO                                                                      
+----------                                                                      
+      7788 SCOTT      ANALYST         7566 19-4月 -87           3000            
+        20                                                                      
+                                                                                
+      7839 KING       PRESIDENT            17-11月-81           5000            
+        10                                                                      
+                                                                                
+      7844 TURNER     SALESMAN        7698 08-9月 -81           1575          0 
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE              SAL       COMM 
+---------- ---------- --------- ---------- -------------- ---------- ---------- 
+    DEPTNO                                                                      
+----------                                                                      
+      7876 ADAMS      CLERK           7788 23-5月 -87           1210            
+        20                                                                      
+                                                                                
+      7900 JAMES      CLERK           7698 03-12月-81         1092.5            
+        30                                                                      
+                                                                                
+      7902 FORD       ANALYST         7566 03-12月-81           3000            
+        20                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE              SAL       COMM 
+---------- ---------- --------- ---------- -------------- ---------- ---------- 
+    DEPTNO                                                                      
+----------                                                                      
+      7934 MILLER     CLERK           7782 23-1月 -82           1430            
+        10                                                                      
+                                                                                
+
+已选择16行。
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        50 PRINT                                                                
+        10 ACCOUNTING     NEW YORK                                              
+        20 RESEARCH       DALLAS                                                
+        30 SALES          CHICAGO                                               
+        40 OPERATIONS     BOSTON                                                
+
+SQL> SELECT * FROM EMP_VIEW;
+
+     EMPNO ENAME             SAL DNAME                                          
+---------- ---------- ---------- --------------                                 
+      9000 JOB                   PRINT                                          
+      9001 JOB                   PRINT                                          
+      7369 SMITH             920 RESEARCH                                       
+      7499 ALLEN            1680 SALES                                          
+      7521 WARD             1375 SALES                                          
+      7566 JONES         3123.75 RESEARCH                                       
+      7654 MARTIN           1375 SALES                                          
+      7698 BLAKE          2992.5 SALES                                          
+      7782 CLARK          2572.5 ACCOUNTING                                     
+      7788 SCOTT            3000 RESEARCH                                       
+      7839 KING             5000 ACCOUNTING                                     
+
+     EMPNO ENAME             SAL DNAME                                          
+---------- ---------- ---------- --------------                                 
+      7844 TURNER           1575 SALES                                          
+      7876 ADAMS            1210 RESEARCH                                       
+      7900 JAMES          1092.5 SALES                                          
+      7902 FORD             3000 RESEARCH                                       
+      7934 MILLER           1430 ACCOUNTING                                     
+
+已选择16行。
+
+SQL> INSERT INTO EMP_VIEW(EMPNO,ENAME,SAL,DNAME)
+  2  VALUES (9002,'TOM',2000,'DESTROY');
+INSERT INTO EMP_VIEW(EMPNO,ENAME,SAL,DNAME)
+            *
+第 1 行出现错误: 
+ORA-01400: 无法将 NULL 插入 ("SCOTT"."DEPT"."DEPTNO")
+ORA-06512: 在 "SCOTT.EMP_VIEW_CHANGE", line 8
+ORA-04088: 触发器 'SCOTT.EMP_VIEW_CHANGE' 执行过程中出错 
+
+
+SQL> SELECT COUNT(DNAME),MAX(DEPTNO) FROM DEPT
+  2  WHERE DNAME='PRINT';
+
+COUNT(DNAME) MAX(DEPTNO)                                                        
+------------ -----------                                                        
+           1          50                                                        
+
+SQL> ED
+已写入 file afiedt.buf
+
+  1  SELECT COUNT(DNAME),MAX(DEPTNO) FROM DEPT
+  2* WHERE DNAME='RINT'
+SQL> /
+
+COUNT(DNAME) MAX(DEPTNO)                                                        
+------------ -----------                                                        
+           0                                                                    
+
+SQL> CREATE OR REPLACE TRIGGER EMP_VIEW_CHANGE
+  2      INSTEAD OF INSERT ON EMP_VIEW
+  3      FOR EACH ROW
+  4  DECLARE
+  5      V_COUNTER INT;
+  6      V_MAX_DEPTNO DEPT.DEPTNO%TYPE;
+  7  BEGIN
+  8      SELECT COUNT(DNAME) INTO V_COUNTER FROM DEPT
+  9      WHERE DNAME= :NEW.DEPTNAME;
+ 10      SELECT MAX(DEPTNO) INTO V_MAX_DEPTNO FROM DEPT;
+ 11      IF V_COUNTER=0 THEN
+ 12          INSERT INTO DEPT(DEPTNO,DNAME) VALUES(V_MAX_DEPTNO+1,:NEW.DNAME);
+ 13      END IF;
+ 14  
+ 15  END;
+ 16  /
+
+警告: 创建的触发器带有编译错误。
+
+SQL> ED
+已写入 file afiedt.buf
+
+  1  CREATE OR REPLACE TRIGGER EMP_VIEW_CHANGE
+  2      INSTEAD OF INSERT ON EMP_VIEW
+  3      FOR EACH ROW
+  4  DECLARE
+  5      V_COUNTER INT;
+  6      V_MAX_DEPTNO DEPT.DEPTNO%TYPE;
+  7  BEGIN
+  8      SELECT COUNT(DNAME) INTO V_COUNTER FROM DEPT
+  9      WHERE DNAME= :NEW.DNAME;
+ 10      SELECT MAX(DEPTNO) INTO V_MAX_DEPTNO FROM DEPT;
+ 11      IF V_COUNTER=0 THEN
+ 12          INSERT INTO DEPT(DEPTNO,DNAME) VALUES(V_MAX_DEPTNO+1,:NEW.DNAME);
+ 13      END IF;
+ 14* END;
+ 15  /
+
+触发器已创建
+
+SQL> CREATE OR REPLACE TRIGGER EMP_VIEW_CHANGE
+  2      INSTEAD OF INSERT ON EMP_VIEW
+  3      FOR EACH ROW
+  4  DECLARE
+  5      V_COUNTER INT;
+  6      V_MAX_DEPTNO DEPT.DEPTNO%TYPE;
+  7  BEGIN
+  8      SELECT COUNT(DNAME) INTO V_COUNTER FROM DEPT
+  9      WHERE DNAME= :NEW.DEPTNAME;
+ 10      SELECT MAX(DEPTNO) INTO V_MAX_DEPTNO FROM DEPT;
+ 11      IF V_COUNTER=0 THEN
+ 12          INSERT INTO DEPT(DEPTNO,DNAME) VALUES(V_MAX_DEPTNO+1,:NEW.DNAME);
+ 13      END IF;
+ 14  
+ 15  END;
+ 16  /
+
+警告: 创建的触发器带有编译错误。
+
+SQL> CREATE OR REPLACE TRIGGER EMP_VIEW_CHANGE
+  2      INSTEAD OF INSERT ON EMP_VIEW
+  3      FOR EACH ROW
+  4  DECLARE
+  5      V_COUNTER INT;
+  6      V_MAX_DEPTNO DEPT.DEPTNO%TYPE;
+  7  BEGIN
+  8      SELECT COUNT(DNAME) INTO V_COUNTER FROM DEPT
+  9      WHERE DNAME= :NEW.DNAME;
+ 10      SELECT MAX(DEPTNO) INTO V_MAX_DEPTNO FROM DEPT;
+ 11      IF V_COUNTER=0 THEN
+ 12          INSERT INTO DEPT(DEPTNO,DNAME) VALUES(V_MAX_DEPTNO+1,:NEW.DNAME);
+ 13      END IF;
+ 14  END;
+ 15  /
+
+触发器已创建
+
+SQL> INSERT INTO EMP_VIEW(EMPNO,ENAME,SAL,DNAME)
+  2  VALUES (9002,'TOM',2000,'DESTROY');
+
+已创建 1 行。
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        51 DESTROY                                                              
+        50 PRINT                                                                
+        10 ACCOUNTING     NEW YORK                                              
+        20 RESEARCH       DALLAS                                                
+        30 SALES          CHICAGO                                               
+        40 OPERATIONS     BOSTON                                                
+
+已选择6行。
+
+SQL> drop emp_view_change;
+drop emp_view_change
+     *
+第 1 行出现错误: 
+ORA-00950: 无效 DROP 选项 
+
+
+SQL> drop trigger emp_view_change;
+
+触发器已删除。
+
+SQL> drop view emp_view;
+
+视图已删除。
+
+SQL> spool off;

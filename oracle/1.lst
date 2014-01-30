@@ -1,0 +1,68 @@
+SQL> set linesize 300
+SQL> set pagesize 20
+SQL> set serveroutput on
+SQL> DECLARE
+  2      E_EMPRECORD EMP%ROWTYPE;
+  3  BEGIN
+  4      SELECT * INTO E_EMPRECORD
+  5      FROM EMP WHERE EMPNO=&EMPNO;
+  6      DBMS_OUTPUT.PUT_LINE('编号： '||E_EMPRECORD.EMPNO);
+  7      DBMS_OUTPUT.PUT_LINE('姓名： '||E_EMPRECORD.ENAME);
+  8      DBMS_OUTPUT.PUT_LINE('工作： '||E_EMPRECORD.JOB);
+  9      DBMS_OUTPUT.PUT_LINE('受雇日期： '||E_EMPRECORD.HIREDATE);
+ 10      DBMS_OUTPUT.PUT_LINE('工资： '||E_EMPRECORD.SAL);
+ 11      DBMS_OUTPUT.PUT_LINE('部门号： '||E_EMPRECORD.DEPTNO);
+ 12  END;
+ 13  /
+输入 empno 的值:  7566
+原值    5:     FROM EMP WHERE EMPNO=&EMPNO;
+新值    5:     FROM EMP WHERE EMPNO=7566;
+编号： 7566                                                                                                                                                                                                                                                                                                 
+姓名： JONES                                                                                                                                                                                                                                                                                                
+工作： MANAGER                                                                                                                                                                                                                                                                                              
+受雇日期： 02-4月 -81                                                                                                                                                                                                                                                                                       
+工资： 3123.75                                                                                                                                                                                                                                                                                              
+部门号： 20                                                                                                                                                                                                                                                                                                 
+
+PL/SQL 过程已成功完成。
+
+SQL> ED
+已写入 file afiedt.buf
+
+  1  DECLARE
+  2      E_EMPRECORD EMP%ROWTYPE;
+  3  BEGIN
+  4      SELECT * INTO E_EMPRECORD
+  5      FROM EMP WHERE EMPNO=&EMPNO;
+  6      DBMS_OUTPUT.PUT_LINE('编号： '||E_EMPRECORD.EMPNO);
+  7      DBMS_OUTPUT.PUT_LINE('姓名： '||E_EMPRECORD.ENAME);
+  8      DBMS_OUTPUT.PUT_LINE('工作： '||E_EMPRECORD.JOB);
+  9      DBMS_OUTPUT.PUT_LINE('受雇日期： '||E_EMPRECORD.HIREDATE);
+ 10      DBMS_OUTPUT.PUT_LINE('工资： '||E_EMPRECORD.SAL);
+ 11      DBMS_OUTPUT.PUT_LINE('部门号： '||E_EMPRECORD.DEPTNO);
+ 12      EXCEPTION
+ 13        WHEN NO_DATA_FOUND THEN
+ 14            DBMS_OUTPUT.PUT_LINE('输入的编号不存在！');
+ 15* END;
+SQL> /
+输入 empno 的值:  8000
+原值    5:     FROM EMP WHERE EMPNO=&EMPNO;
+新值    5:     FROM EMP WHERE EMPNO=8000;
+输入的编号不存在！                                                                                                                                                                                                                                                                                          
+
+PL/SQL 过程已成功完成。
+
+SQL> /
+输入 empno 的值:  7566
+原值    5:     FROM EMP WHERE EMPNO=&EMPNO;
+新值    5:     FROM EMP WHERE EMPNO=7566;
+编号： 7566                                                                                                                                                                                                                                                                                                 
+姓名： JONES                                                                                                                                                                                                                                                                                                
+工作： MANAGER                                                                                                                                                                                                                                                                                              
+受雇日期： 02-4月 -81                                                                                                                                                                                                                                                                                       
+工资： 3123.75                                                                                                                                                                                                                                                                                              
+部门号： 20                                                                                                                                                                                                                                                                                                 
+
+PL/SQL 过程已成功完成。
+
+SQL> spool off

@@ -1,0 +1,691 @@
+3.7分析和處理數據
+SELECT COUNT(*)
+FROM books
+JOIN authors USING (author_id)
+WHERE author_last='Tolstoy';
+
+=================
+SELECT COUNT(*)
+FROM emp
+JOIN dept USING (DEPTNO)
+WHERE DNAME='SALES';
+
+-----------
+
+SELECT SUM(sale_amount) AS 'Armadillo Sales'
+FROM orders
+JOIN books USING (book_id)
+JOIN authors USING (author_id)
+WHERE title = 'Armadillo'
+AND author_last = 'Boyd';
+
+==================
+
+SELECT SUM(SAL) AS 'Research Sallary'
+FROM emp
+JOIN dept USING (DEPTNO)
+WHERE DNAME = 'RESEARCH';
+
+--------------
+SELECT purchase_date AS 'Purchase Date'
+FROM orders
+WHERE sale_id = '1250';
+
+=====================
+
+SELECT HIREDATE AS 'Hire Date'
+FROM emp
+WHERE EMPNO = 7698;
+
+-----------
+
+SELECT CONCAT(MONTHNAME(purchase_date), ' ' ,
+DAYOFMONTH(purchase_date), ', ',
+YEAR(purchase_date)) AS 'Purchase Date'
+FROM orders
+WHERE sale_id = '1250';
+
+======================
+
+SELECT CONCAT(MONTHNAME(HIREDATE), ' ' ,
+DAYOFMONTH(HIREDATE), ', ',
+YEAR(HIREDATE)) AS 'Hire Date'
+FROM emp
+WHERE EMPNO = 7698;
+
+------------
+
+SELECT DATE_FORMAT(purchase_date, "%M %d, %Y")
+AS 'Purchase Date'
+FROM orders
+WHERE sale_id = '1250';
+
+====================
+
+SELECT DATE_FORMAT(HIREDATE, "%M %d, %Y")
+AS 'Hire Date'
+FROM emp
+WHERE EMPNO = 7698;
+
+
+3.8 修改數據
+
+UPDATE books
+SET pub_year = '1938'
+WHERE book_id = '2';
+-----
+ALTER TABLE books
+CHANGE COLUMN isbn VARCHAR(20) UNIQUE;
+----
+REPLACE INTO books
+(title, author_id, isbn, genre, pub_year)
+VALUES('Brighton Rock', 1, '0099478471', 'novel', '1938'),
+('The Quiet American', 1, '0099478393', 'novel', '1955');
+
+3.9 刪除數據
+DELETE FROM books
+WHERE author_id =
+    (SELECT authors.author_id FROM authors
+     WHERE author_last = 'Rowling'
+     AND author_first = 'J.K.');
+----------
+DELETE FROM authors
+WHERE authors_last = 'Rowling'
+AND author_first = 'J.K.';
+-----
+SET @potter = 
+    (SELECT author_id FROM authors
+     WHERE author_last = 'Rowling'
+     AND author_first = 'J.K.');
+
+DELETE FROM books
+WHERE author_id = @potter;
+
+DELETE FROM authors
+WHERE author_id = @potter;
+=========
+SET @EMPNO =
+    (SELECT EMPNO FROM emp
+     WHERE JOB = 'CLERK'
+     AND ENAME = 'SMITH');
+
+SELECT * FROM emp
+WHERE EMPNO = @EMPNO;
+---------------
+3.10 查詢數據
+SELECT book_id, title,
+CONCAT(author_first, ' ', author_last) AS author
+FROM books
+JOIN authors USING (author_id)
+WHERE title LIKE '%traveler%'
+AND title LIKE '%winter%'
+==========
+SELECT EMPNO,
+CONCAT(ENAME, ' is ', JOB) AS EMPLOYEE_STATUS
+FROM emp
+JOIN dept USING (DEPTNO)
+WHERE DNAME LIKE '%ACC%'; 
+
+---------
+SELECT book_id, title
+FROM books
+WHERE author_id = 1
+AND title LIKE '%Stamboul%'
+OR author_id = 1
+AND title LIKE '%Orient%';
+值得注意的是，在每個表達式中都要指定author_id的值，否則我們可能會得到其他作者的
+作品名中包含查詢字符的圖書信息。
+============
+SELECT EMPNO, ENAME
+FROM emp
+WHERE MGR = 7698
+AND ENAME LIKE '%A%'
+OR MGR = 7698
+AND ENAME LIKE '%W%';
+
+3.11  批量導入數據
+在圖書數據庫中，假設一個賣主發給我們一個磁盤，磁盤內的一個純文本文件列出了他們所有的
+圖書信息。每本書的記錄是單獨的一行，豎線把每個記錄的字段分開。下面是一個虛構的賣主
+數據文本文件：
+ISBN|TITLE|AUTHOR LAST|AUTHOR FIRST|COPYRIGHT DATE|
+067973452X|Notes from Underground|Dostoevsky|Fyodor|August 1994|
+...
+第一行是記錄中字段的描述。不需要提取第一行，對於我們而言，它只是對字段的說明。因此，輸入SQL語句時可讓MySQL將其忽略。
+
+就數據而言，我們必須關注以下幾個問題。首先，字段並沒有按表中的順序排列。我們必須讓
+MySQL知道將要導入的數據的順序，以便做調整。另一個問題是，文本文件中既包含books表的
+數據，也有authors表的數據。這個問題比較麻煩，但還是可以解決的。我們僅用一條SQL語句就
+可以提取作者的信息，然後再運行一個單獨的SQL語句導入圖書信息。在開始操作前，我們先將
+名爲books.txt的賣主文件複製到臨時目錄（例如：/tmp）。先在，可以從mysql客戶機運行
+LOAD DATA INFILE語句了：
+
+LOAD DATA INFILE '/tmp/books.txt' REPLACE INTO TABLE authors
+FIELDS TERMINATED BY '|' LINES TERMINATED BY '\r\n'
+TEXT_FIELDS(col1, col2, col3, col4, col5)
+SET author_last = col3, author_first = col4
+IGNORE col1, col2, col5, 1 LINES;
+
+=========
+GRADE|LOSAL|HISAL|
+6|10000|12000|
+7|12001|14000|
+8|14001|17000|
+
+LOAD DATA INFILE 'D:/mysql_test/salgrade.txt' REPLACE INTO TABLE salgrade
+FIELDS TERMINATED BY '|'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES
+  (GRADE, LOSAL, HISAL);
+
+首先需要指出，儘管本書已多次出現IGNORE n LINES子句，但MySQL 4.1及之前的版本並不支持
+與列相關的TXT_FIELDS和IGNORE子句。使用IGNORE 1 LINES，文本文件中包含列標題的第一行信息
+將被忽略。回到SQL語句的第一行，我們已經指定了將要導入的文件名以及將被裝載數據的表名。
+REPLACE標記與前面提到的REPLACE語句的作用相同。當然，姓名字段沒有設置成唯一值，就MySQL
+而言將不會出現任何重複數據的問題。在實際情況下，你還是應該修改數據表以防止作者姓名有
+重複。
+
+在第二行中，我們指定每個字段以豎線作爲結束符，每行以回車(\r)換行(\n)結束。這是對
+MS-DOS系統下的文本文件而言的。UNIX下僅以換行符作爲行的結束。
+
+在第三行SQL語句中，我們爲每個字段創建了一個別名。在第四行語句中，基於前一行語句給出的
+別名，我們給表中將要接收數據的列設置別名。
+
+最後一行語句中，我們通知MySQL忽略不想要的列，以及第一行信息，因爲這些被略去的內容不包含
+數據信息。
+
+----
+如果你使用的舊版本MySQL不支持忽略列的操作，則需執行幾個額外的步驟。有幾種不同的實現
+方式。如果將被裝載數據的表不是很大，則可以採用一個簡單的方法，就是爲authors表添加
+三個額外的臨時列，這些列用於接收文本文件中想要略去的字段值以便以後將其刪除。實現上述
+操作的SQL語句如下所示：
+ALTER TABLE authors
+ADD COLUMN col1 VARCHAR(50),
+ADD COLUMN col2 VARCHAR(50),
+ADD COLUMN col5 VARCHAR(50);
+
+LOAD DATA INFILE '/tmp/books.txt' REPLACE INTO TABLE authors
+FIELDS TERMINATED BY '|' LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES
+(col1, col2, author_last, author_first, col5);
+
+ALTER TABLE authors
+DROP COLUMN col1,
+DROP COLUMN col2,
+DROP COLUMN col5;
+上述第二個SQL語句中IGNORE子句指定了將被忽略的行。該語句的最後一行列出了authors表中
+的所有列，這些列將接收數據，並且按照數據導入的順序排列。
+第三個SQL語句結束從賣主的文本文件中導入數據的操作，現在我們使用DROP語句刪除臨時列
+以及列中的數據。DROP語句執行後就不能撤銷了，因此要慎用該語句。
+------
+如果我們想從文本文件中將作者信息列複製到authors表中，則需要先裝載books表中的數據，
+得到每本書正確的author_id值，通過下列語句可實現：
+LOAD DATA INFILE '/tmp/books.txt' IGNORE INTO TABLE books
+FIELDS TERMINATED BY '|' LINES TERMINATED BY '\r\n'
+TEXT_FIELDS(col1, col2, col3, col4, col5)
+SET isbn = col1, title = col2,
+pub_year = RIGHT(col5, 4),
+author_id = 
+    (SELECT author_id
+     WHERE author_last = col3
+     AND author_first = col4)
+IGNORE col3, col4, 1 LINES;
+
+在這個SQL語句中，我們添加了幾個方法來獲取所需結果。在第五行中，我們使用字符串函數RIGHT()
+從copyright字段中提取年份（copyright字段中包含年和月）。RIGHT()函數提取了指定的第二個
+參數col5中的後四個字符。
+
+
+
+
+第4章 安全、用戶語句和函數
+
+4.1 語句和函數
+下面是本章涉及的與安全和用戶有關的語句列表：
+CREATE USER, DROP USER, FLUSH, GRANT, RENAME USER, RESET, REVOKE, SET PASSWORD,
+SHOW GRANTS, SHOW PRIVILEGES.
+下面是本章與函數有關的語句列表：
+AES_DECRYPT(), AES_ENCRYPT(), CURRENT_USER(), DECODE(), DES_DECRYPT(),
+DES_ENCRYPT(), ENCODE(), ENCRYPT(), MD5(), OLD_PASSWORD(), PASSWORD(),
+SESSION_USER(), SHA(), SHA1(), SYSTEM_USER(), USER().
+
+4.2 按字母排序的SQL語句
+
+---------
+CREATE USER語法
+
+CREATE USER 'user'[@'host']
+[IDENTIFIED BY [PASSWORD] 'password'] [,...]
+
+如果沒有指定password子句，默認情況下爲空密碼。此時，存在着潛在的安全問題，千萬不要
+這麼做！如果你犯過這樣的錯誤，請使用SET PASSWORD語句來設置密碼。
+
+可以使用由逗號分隔的列表指定多個用戶帳戶。
+
+從MySQL 5.0.2版本開始引入了CREATE USER語句。在以前的版本中，使用GRANT語句。這一新增語句
+與GRANT語句的作用是類似的，只是使用CREATE USER 語句無法指定用戶權限。因此，過程是這樣的：首先使用CREATE USER語句創建用戶，然後使用GRANT語句授予用戶權限。這二步過程具有很大的邏輯性，尤其對於MySQL的新手來講。然而，你可以僅僅使用GRANT語句來創建新用戶並爲其設置權限。
+
+要想使用CREATE USER語句，你必須擁有包含用戶帳戶信息和權限的mysql數據庫的CREATE USER權限或者擁有INSERT權限。要想撤銷用戶、請使用DROP USER語句，也可以使用REVOKE語句。
+
+CREATE USER 'paola'@'localhost'
+IDENTIFIED BY 'her_password',
+'paola'@'caporale.com'
+IDENTIFIED BY 'her_password';
+-------------
+DROP USER語法
+
+DROP USER 'user'@'host'
+使用DROP USER語句可以刪除MySQL服務器上的用戶。從MySQL 5.0.2版本開始，這條語句將刪除
+用戶帳戶和來自所有授權表的特權。
+使用該語句，必須擁有包含了用戶帳戶信息和權限的mysql數據庫的CREATE USER權限或者DELETE權限。刪除用戶帳戶並不會影響它們的當前會話。只有用戶結束打開的會話時纔會起作用。已刪除的用戶如果想終止一個打開的客戶端會話，可以使用KILL語句（第7章）來實現。
+
+一些用戶可能不止有一個帳戶（如用戶和主機的組合）。爲了確保這一點，你應該檢查服務器的
+mysql.user表：
+SELECT User,Host
+FROM mysql.user
+WHERE User LIKE 'paola';
+
+DROP USER 'paola'@'localhost',
+'paola'@'caporale.com';
+
+在MySQL 5.0.2版本之前，DROP USER語句並不能刪除具有全局權限的用戶。爲了撤銷用戶帳戶的權限，在使用DROP USER語句之前，請使用REVOKE語句：
+REVOKE ALL ON *.* FROM 'paola'@'localhost';
+
+DROP USER 'paola'@'localhost';
+ALL選項用以確保撤銷所有權限。*.*涵蓋了所有數據庫中的所有表。在MySQL 4.1.1版本之前，你
+必須使用如下語句爾不是DROP USER語句：
+DELETE FROM mysql.user
+WHERE User = 'paola' AND Host = 'localhost';
+
+FLUSH PRIVILEGES;
+注意，必須使用FLUSH PRIVILEGES語句才能令前面的DELETE語句立即生效。爾在DROP USER語句之後，這個語句並非是必需的。
+
+------------
+FLUSH語法
+
+FLUSH [LOCAL|NO_WRITE_TO_BINLOG] option[, ...]
+選項：
+    DES_KEY_FILE, HOSTS, LOGS, MASTER, PRIVILEGES, QUERY_CACHE,
+    STATUS, TABLE, TABLES, TABLES WITHOUT READ LOCK, USER_RESOURCES
+
+使用FLUSH語句可以清除並重載MySQL的臨時緩存。要想執行FLUSH命令，你必須擁有RELOAD權限。爲了防止該語句寫入二進制日誌文件，你可以使用NO_WRITE_TO_BINLOG標記或者其別名LOCAL。
+
+從MySQL 5.1版本開始，FLUSH不能用在存儲函數和觸發器之中，但是可以用在存儲過程中。作爲FLUSH語句的替代者，你可以使用mysqladmin命令（參見16章）。
+-------------
+GRANT語法
+
+GRANT privilege[, ...] [(column[, ...])][, ...]
+ON [TABLE|FUNCTION|PROCEDURE] {[{database|*}.{table|*}] | *}
+TO 'user'@'host' [IDENTIFIED BY [PASSWORD] 'password'][, ...]
+
+[REQUIRE NONE | 
+[{SSL|X509}] [CIPHER 'cipher' [AND]]
+[ISSUER 'issue' [AND]]
+[SUBJECT 'subject']]
+
+[WITH [GRANT OPTION | 
+       MAX_QUERIES_PER_HOUR count | 
+       MAX_UPDATES_PER_HOUR count | 
+       MAX_CONNECTIONS_PER_HOUR count |
+       MAX_USER_CONNECTIONS count] ...]
+
+想瞭解對於指定用戶的授權，可以使用在本章後面部分講述的SHOW GRANTS語句。
+我們可以爲用戶授予許多不同的權限，因此可以使用關鍵字ALL來組合這些總的權限集。下面示例：
+GRANT ALL PRIVILEGES ON *.*
+TO 'evagelia'@'localhost'
+IDENTIFIED BY 'papadimitrou1234'
+WITH GRANT OPTION;
+在這個示例中，我們創建了evagelia用戶。由於使用了ALL關鍵字，所以我們爲該用戶授予了所有的
+基本權限。這並不包含用戶可以使用GRANT語句的能力，也就是說用戶不具備GRANT權限。爲了令用戶具備GRANT權限，需要指定WITH GRANT OPTION子句，如上例所示，明確地爲用戶授予該權限。除非特別需要，本書不建議你這麼做。
+
+GRANT SELECT ON workrequests.*
+TO 'jerry'@'localhost' IDENTIFIED BY 'neumeyer3186';
+
+GRANT SELECT,INSERT,UPDATE ON workrequests.workreq
+TO 'jerry'@'localhost' IDENTIFIED BY 'neumeyer3186';
+
+workrequests數據庫   workreq數據表
+
+----------
+GRANT：限制連接類型
+
+GRANT privilege[, ...] [ (column[, ...]) ][, ...]
+ON [TABLE|FUNCTION|PROCEDURE] {[{database|*}.{table|*}] | *}
+TO 'user'@'host' [IDENTIFIED BY [PASSWORD] 'password'][, ...]
+
+[REQUIRE NONE |
+[{SSL|X509} [AND]]
+[CIPHER 'cipher' [AND]]
+[ISSUER 'issue' [AND]]
+[SUBJECT 'subject']]
+
+[time and number of connection limits] ...]
+
+REQUIRE SSL選項限制用戶只可以進行SSL加密連接。用戶帳戶的mysql客戶機將啓動帶有--ssl-ca選項的客戶機，如果需要的話，也會帶有--ssl-key和--ssl-cert選項：
+GRANT ALL PRIVILEGES ON workrquests.* TO 'rusty'@'localhost'
+IDENTIFIED BY 'her_password'
+REQUIRE SSL;
+
+使用REQUIRE X509選項要求用戶帳戶擁有一個有效的CA證明。儘管這並不需要用戶具有任意的特殊證明。啓動mysql客戶機時，需要使用--ssl-ca,--ssl-key和--ssl-cert選項。爲了簡化處理這些選項，用戶可以把它們放在一個服務器的安裝目錄中的選項文件中（如~/.my.cnf）。下面的一個示例展示了包含這些選項的文件與用戶帳戶限制一致：
+[client]
+ssl-ca=/data/mysql/cacert.pem
+ssl-key=/data/mysql/rusty-key.pem
+ssl-cert=/data/mysql/rusty-cert.pem
+
+使用REQUIRE CIPHER選項需要爲用戶帳戶指定一個cipher方法：
+
+GRANT ALL PRIVILEGES ON workrequests.* TO 'rusty'@'localhost'
+IDENTIFIED BY 'her_password'
+REQUIRE CIPHER 'EDH-RSA-DES-CBC3-SHA';
+
+REQUIRE ISSUER通常用來要求用戶提供有效的證明，它是由CA發佈的一個X.509證明。發佈者給出的字符串或許有點長，它必須是一個非嵌入在換行中的字符串：
+GRANT ALL PRIVILEGES ON workrequests.* TO 'rusty'@'localhost'
+IDENTIFIED BY 'her_password'
+REQUIRE ISSUER '/C=US/ST=Louisiana/L=NEW+20Orleans/O=WorkRequesters/CN=
+   cacert.workrequests.com/emailAddress=admin@workrequests.com';
+
+REQUIRE SUBJECT選項需要具有給定主題的用戶帳戶使用過X.509證明：
+GRANT ALL PRIVILEGES ON workrequests.* TO 'rusty'@'localhost'
+IDENTIFIED BY 'her_password'
+REQUIRE ISSUER '/C=US/ST=Louisiana/L=NEW+20Orleans/O=WorkRequesters/CN=
+   Rusty Osborne/emailAddress=rusty@workrequests.com';
+-------------
+GRANT: 連接次數和數目的限制
+
+GRANT privilege[, ...] [(column[, ...])][, ...]
+ON [TABLE|FUNCTION|PROCEDURE] {[{database|*}.{table|*}] | *}
+TO 'user'@'host' [IDENTIFIED BY [PASSWORD] 'password' ][, ...]
+
+[type of connection restrictions]
+
+[WITH [MAX_QUERIES_PER_HOUR count |
+       MAX_UPDATES_PER_HOUR count |
+       MAX_CONNECTIONS_PER_HOUR count |
+       MAX_USER_CONNECTIONS count] ...]
+
+你可以使用帶有MAX_QUERIES_PER_HOUR選項的WITH子句來爲用戶指定每小時執行查詢的最大數量。
+MAX_UPDATES_PER_HOUR選項可以指明在UPDATE語句中用戶每小時發出的最大更新數目。
+MAX_CONNECTIONS_PER_HOUR選項用以指明用戶每小時可以同時連接服務器的最大數量。
+
+這3個選項的默認值是0。此值表示這些資源沒有（任何）限制。MAX_USER_CONNECTIONS選項會用來設置給定的用戶帳戶可以同時連接的最大數目。如果沒有設置這個值或者其值爲0，則會使用系統變量max_user_connections的值（確定該帳戶可以同時連接的數量）。下面是一個如何使用這種方式來進行限制的示例：
+GRANT SELECT ON catalogs.*
+TO 'webuser'@'%'
+WITH MAX_QUERIES_PER_HOUR 1000
+MAX_CONNECTIONS_PER_HOUR 100;
+上述示例設計成用戶（webuser）通過Web服務器進行查詢的用戶數目。這條語句創建來webuser用戶並允許他從catalogs數據庫中讀取表。在1小時內用戶查詢的次數不能超過1000，在1小時內僅僅可以建立100次連接。
+
+在不改變帳戶現有權限的情況下，要想改變現有用戶帳號的資源，你可以使用關鍵字USAGE。你可以簡單地輸入類似下面的語句：
+GRANT USAGE ON catalogs.*
+TO 'webuser'@'%'
+WITH MAX_QUERIES_PER_HOUR 10000
+MAX_CONNECTIONS_PER_HOUR 100;
+
+有關權限的列表(PAGE 53)
+GRANT和REVOKE權限
+
+權限
+ALL [PRIVILEGES]
+ALTER
+ALTER ROUTINE
+CREATE
+CREATE ROUTINE
+CREATE TEMPORARY TABLES
+CREATE USER
+CREATE VIEW
+DELETE
+DROP
+EVENT
+EXECUTE
+FILE
+GRANT OPTION
+INDEX
+INSERT
+LOCK TABLES
+PROCESS
+REFERENCES
+RELOAD
+REPLICATION CLIENT
+REPLICATION SLAVE
+SELECT
+SHOW DATABASES
+SHOW VIEW
+SHUTDOWN
+SUPER
+TRIGGER
+UPDATE
+USAGE
+
+--------------
+RENAME USER語法
+
+RENAME USER 'user'[@'host'] TO 'user'[@'host'][, ...]
+使用該語句改變用戶名或者原有用戶帳戶的主機。它並不能修改用戶權限或者把任何權限遷移到數據庫、事件、存儲程序、表、觸發器或者視圖上。如下面示例所示：
+RENAME USER 'michaelzabalaoui'@'localhost' TO 'zabb'@'%',
+'richardstringer'@'localhost' TO 'littlerichard'@'localhost';
+在此處修改來第一個用戶的名字和主機，爾第二個用戶僅僅修改了他的名字。
+-------
+RESET語法
+
+RESET [QUERY CACHE|MASTER|SLAVE]
+使用RESET語句來重置某些服務器的環境和日誌文件。需指定RELOAD權限時才可以使用這條語句。QUERY CACHE選項清空包含SQL查詢結果的緩存。
+
+MASTER選項重置用於複製的主服務器。
+SLAVE選項用於重置複製時的從屬服務器。
+
+---------
+REVOKE語法
+
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM user[, ...]
+
+REVOKE privilege[, ...] [(column[, ...])]
+ON {[{database|*}.{table|*}] | *}
+FROM 'user'@'host'[, ...]
+使用這條語句撤銷應用GRANT語句授予給用戶的部分或者所有權限。第一條語句用來撤銷用戶的所有權限。可以使用逗號分隔符來制定多用戶列表。用戶列表及其權限存儲在mysql數據庫中，尤其是在user表中：
+
+REVOKE ALL PRIVILEGES
+ON *.*
+FROM 'paola'@'localhost';
+
+若要撤銷指定列的權限，在圓括號中應用逗號分隔符列舉出對應的列。基於列的權限存儲在mysql數據庫的columns_priv表中。
+---------
+SET PASSWORD語法
+
+SET PASSWORD [FOR 'user'@'host'] = PASSWORD('password')
+
+爲了得到你的服務器上用戶帳戶的一個列表，輸入下列SQL語句：
+SELECT User,Host FROM mysql.user;
+
+在SET PASSWORD語句中如果沒有指定FOR字句，默認情況下爲當前用戶帳戶。函數PASSWORD()將會對給定的密碼進行加密。
+
+在這條語句的後面不必緊跟FLUSH PRIVILEGES語句。他會爲新密碼自動更新權限的緩存。如果你的服務器從MySQL 4.1之前的版本更新到一個新的版本，在修改用戶帳戶的密碼時可能會遇到問題，這回導致用戶帳戶的密碼無效。你需要運行mysql_fix_privilege_tables實用工具來修改在mysql數據庫中的user表中的Password列。（關於該實用工具參見16章）
+
+下面是一個修改用戶帳戶密碼的一個示例：
+SET PASSWORD FOR 'kenneth'@'localhost' = PASSWORD('his_password');
+
+---------
+SHOR GRANT語法
+
+SHOW GRANTS [FOR 'user'[@'host']]
+這條SQL語句爲給定的用戶列出了GRANT語句。如果沒有指定FOR字句，默認爲當前用戶。如果給定的用戶名沒有參考特定的主機，默認使用通配符%。否則，用戶名後面需跟着主機，如下所示：
+
+SHOW GRANTS FOR 'russell'@'localhost'\G
+
+-----------
+SHOW PRIVILEGES語法
+
+SHOW PRIVILEGES
+
+這條語句顯示可用的系統權限清單，後面跟着每一個的上下文（如服務器管理）和描述。輸出並不是依據用戶來定的。實際上，它是一個完整的分配給用戶的權限列表。從MySQL 4.1版本開始這條語句纔
+是可以用的。
+------
+
+++++++++++++++++++++++
+第5章  數據庫和表模式語句
+
+本章涵蓋了如下語句：
+ALTER DATABASE, ALTER SCHEMA, ALTER SERVER, ALTER TABLE, ALTER VIEW, 
+CREATE DATABASE, CREATE INDEX, CREATE SCHEMA, CREATE SERVER, CREATE TABLE, CREATE VIEW,
+DESCRIBE, 
+DROP DATABASE, DROP INDEX, DROP SERVER, DROP TABLE, DROP VIEW, 
+RENAME DATABASE, RENAME TABLE, 
+SHOW CHARACTER SET, SHOW COLLATION, SHOW COLUMNS, 
+SHOW CREATE DATABASE, SHOW CREATE TABLE, SHOW CREATE VIEW, 
+SHOW DATABASES, SHOW INDEXES, SHOW SCHEMAS, SHOW TABLES STATUS, SHOW TABLES, SHOW VIEWS.
+
+
+以字母排序的語句和子句
+----------
+ALTER {DATABASE|SCHEMA} database
+[DEFAULT] CHARACTER SET character_set |
+[DEFAULT] COLLATE collation
+
+使用這條語句來修改數據庫的設置。MySQL從4.1.1版本開始引入了該函數並添加了一個名爲db.opt的文件，該文件包含了數據庫目錄中的數據庫環境。當前，可以使用如下二個選項：
+CHARACTER SET和COLLATE。下面是一個典型的db.opt文件的內容：
+default-character-set=latin1
+default-collation=latin_swedish_ci
+
+雖然管理員可以手工修改這個文件，但是使用ALTER DATABASE語句來修改這個文件更爲穩妥一些。MySQL從5.0.2版本開始，ALTER SCHEMA與ALTER DATABASE是同義詞。要想使用這條語句必須具有ALTER權限。
+
+CHARACTER SET選項可用來設置顯示的第一行，指定用到的數據庫的默認字符集。COLLATE選項用來設置第二行，指定默認的數據庫的整序（字符數字如何按字母順序排序）。下面是使用這條語句的示例：
+ALTER DATABASE human_resources
+CHARACTER SET latin2_bin
+COLLATE latin2_bin;
+
+注意這二個選項可以在一個SQL語句中指定。DEFAULT關鍵字並不是必須的，但是它提供了與其他數據庫系統的兼容性。從MySQL 4.1.8版本開始，如果在SQL語句中省略了數據庫的名字，則默認使用當前的數據庫。確定當前數據庫，使用DATABASE()函數：
+SELECT DATABASE();
+
+關於字符集和字符校對的更多信息，參見本章後面關於SHOW CHARACTER SET和SHOW COLLATION的說明。
+---------
+ALTER SCHEMA
+
+ALTER {DATABASE|SCHEMA} database
+[DEFAULT] CHARACTER SET character_set |
+[DEFAULT] COLLATE collation
+
+這條語句與ALTER DATABASE是同義詞。
+-------
+ALTER SERVER
+
+ALTER SERVER server
+OPTIONS (
+    {HOST host, |
+     DATABASE database, |
+     USER user, |
+     PASSWORD password, |
+     SOCKET socket, |
+     OWNER character, |
+     PORT port }
+)
+
+使用這條支持FEDERATED存儲引擎的SQL語句來修改由CREATE SERVER創建的服務器的連接參數。在mysql數據庫的server表中存儲了該值。給定的參數選項用逗號分隔。選項值必須用字符串或數值文字（UTF-8，最大長度爲64個字符）。該語句從MySQL 5.1.15版本開始引入，而且需要具有SUPER權限方可使用。
+ALTER SERVER server1
+OPTIONS (USER 'test_user', PASSWORD 'testing123', PORT 3307);
+這個示例修改了現有服務器的值，用戶名和連接服務器的端口。
+----------
+ALTER TABLE
+
+ALTER [IGNORE] TABLE table changes[, ...]
+
+IGNORE標記適用於所有的子句，表示MySQL忽略有關列改變時會發生複製行的錯誤信息。它令你查找到唯一的行並刪除重複的行。否則，將終止該語句並撤銷所有變化。
+
+要想修改表，該語句至少需要具有ALTER,CREATE和INSERT權限。當執行ALTER TABLE語句時，用戶能讀取表，但是通常情況下他們不能在表中修改數據或添加數據。當修改表時，使用帶有不完整的DELAYED參數的INSERT語句將會被取消，而且數據會丟失。增加系統變量myisam_sort_buffer_size的容量，有時會增加修改MyISAM表的速度。
+
+---------
+ALTER TABLE:適用於列的ADD子句
+
+ALTER [IGNORE] TABLE table
+ADD [COLUMN] column definition [FIRST|AFTER column]
+ADD [COLUMN] (column definition, ...)
+
+默認情況下，被添加的列會追加到表的末尾。在ADD COLUMN子句後面使用FIRST關鍵字，就能在表的開頭添加一個新列。在ADD COLUMN子句後面使用AFTER關鍵字，後面接列的名字，就能在一個已存在的列後面增加一個新列。
+
+ALTER TABLE workreq
+ADD COLUMN req_type CHAR(4) AFTER req_date,
+ADD COLUMN priority CHAR(4) AFTER req_date;
+注意，你可以在一個ALTER TABLE語句中指定更多的子句；這些子句使用逗號來分隔。
+---------
+ALTER TABLE:適用於標準索引的ADD子句
+
+ALTER [IGNORE] TABLE table
+ADD {INDEX|KEY} [index] [USING index_type] (column,...)
+
+使用ADD INDEX子句向一個表中添加索引。如果你省略了索引的名字，MySQL會用你創建索引的列的名字作爲索引名。可以說明索引的類型，但是通常情況下這並不是必需的。你必須在圓括號中以逗號作爲分隔符來指定一列或多列的索引名。
+
+下面是關於如何使用ALTER TABLE語句來增加索引的示例，後面跟着SHOW INDEXES語句用以顯示該語句執行以後的結果：
+ALTER TABLE clients
+ADD INDEX client_index
+(client_name(10), city(5)) USING BTREE;
+
+SHOW INDEXES FROM clients \G
+
+我們添加的索引稱爲client_index。它基於如下二列：client_name列的前10個字符和city列的前5個字符。在索引中限定字符數有助於精簡索引，增加速度，它和使用完整的列寬度一樣精確。即使有的索引包含了二行，SHOW INDEXES語句執行結果爲每一個索引列顯示了單獨的行。
+
+這個示例中的表使用了MyISAM存儲引擎，該引擎使用默認的BTREE索引類型，因此不必指定索引類型。
+
+在MySQL5.1.10版本之前，在列列表之前或之後也可以使用USING子句，但是從MySQL 5.1.10版本開始，必須緊跟列列表。
+-------------
+ALTER TABLE:適用於FULLTEXT索引的ADD子句
+
+ALTER [IGNORE] TABLE table
+ADD FULLTEXT [INDEX|KEY] [index] (column, ...) [WITH PARSER parser]
+
+ADD FULLTEXT子句在已存在的MyISAM中爲TEXT列添加索引。FULLTEXT索引也可以爲CHAR和VARCHAR列添加索引。這種類型的索引必須使用FULLTEXT功能（參見第11章的MATCH()... AGAINST() 函數）。從MySQL 5版本開始關鍵字INDEX和KEY是可選的。
+
+使用該索引，對於給定的每一列，會用到整列。雖然它可以令它使用表中的前幾個字符，對於索引來講，它依然使用全部的列。對於FULLTEXT索引來講，使用WITH PARSER子句指定語法分析程序插件（parser plugin）：
+ALTER TABLE workreq
+ADD FULLTEXT INDEX notes_index
+(client_description, technician_notes);
+
+SHOW INDEXES FROM workreq\G
+
+...
+
+從MySQL 5.1版本開始，你可以使用WITH PARSER子句爲FULLTEXT索引指定語法分析程序插件。該選項需要加載mysql數據庫中的插件表(plugin table)。該表是當前MySQL安裝的一部分。如果你升級了MySQL，爾插件表沒有在你的系統數據庫mysql中，那麼使用mysql_upgrade腳本把插件表添加到mysql數據庫中。使用SHOW PLUGINS語句來查看已經安裝了哪些插件。
+
+page69
+------------
+ALTER TABLE:適用於SPATIAL索引的ADD子句
+
+ALTER [IGNORE] TABLE table
+ADD SPATIAL [INDEX|KEY] [index] (column, ...)
+
+示例：
+ALTER TABLE squares
+ADD SPATIAL INDEX square_index (square_points);
+
+SHOW INDEXES FROM squares \G
+注意，在我們創建表時，我們指定列square_points是NOT NULL。要想在該列上建立索引，這是必需的。（參見本章的適用於SPATIAL索引的CREATE INDEX語句）
+
+------------
+ALTER TABLE:適用於外鍵的ADD子句
+
+ALTER [IGNORE] TABLE table
+ADD [CONSTRAINT [symbol]] PRIMARY KEY [USING index_type] (column, ...) |
+ADD [CONSTRAINT [symbol]] UNIQUE [INDEX|KEY] index [USING index_type]
+    (column, ...)
+ADD [CONSTRAINT [symbol]] FOREIGN KEY [index] (column, ...)
+    [REFERENCES table (column, ...)
+    [ON DELETE {RESTRICT|CASCADE|SET NULL|NO ACTION|SET DEFAULT}]
+    [ON UPDATE {RESTRICT|CASCADE|SET NULL|NO ACTION|SET DEFAULT}]]
+
+這些ADD子句用於添加外鍵並參照了InnoDB表。外鍵是一個索引，該索引參照了另外一個表中的鍵或者索引。（參見本章後面的CREATE TABLE說明）。
+
+如下示例：
+CREATE TABLE employees
+(emp_id INT AUTO_INCREMENT PRIMARY KEY,
+ tax_id CHAR(12),
+ emp_name VARCHAR(100))ENGINE = INNODB;
+
+CREATE TABLE employees_telephone
+(emp_id INT,
+ tel_type ENUM('office','home','mobile'),
+ tel_number CHAR(25))ENGINE = INNODB;
+
+ALTER TABLE employees_telephone
+ADD FOREIGN KEY emp_tel (emp_id)
+REFERENCES employees (emp_id)
+ON DELETE RESTRICT;
+
+因爲SHOW INDEXES語句不能顯示外鍵約束，所以讓我們看一下使用SHOW TABLE STATUS語句所產生的結果：
+
+SHOW TABLE STATUS FROM human_resources
+LIKE 'employees_telephone' \G

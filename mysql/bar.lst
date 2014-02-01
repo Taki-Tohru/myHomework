@@ -1,0 +1,271 @@
+mysql> CREATE TABLE module (
+    ->   mid int(8) NOT NULL auto_increment,
+    ->   mname varchar(32) NOT NULL,
+    ->   create_date datetime NOT NULL,
+    ->   update_date timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    ->   PRIMARY KEY (mid)
+    -> ) ENGINE=MyISAM DEFAULT CHARSET=gb2312;
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE add_module
+    -> (IN p_mname varchar(32))
+    -> BEGIN
+    ->   DECLARE v_datetime datetime;
+    ->   SET v_datetime = NOW;
+    ->   INSERT INTO module (mname, create_date) VALUES (p_mname, v_datetime);
+    -> END
+    -> //
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> DELIMITER ;
+mysql> CALL add_module('物理');
+ERROR 1054 (42S22): Unknown column 'NOW' in 'field list'
+mysql> DROP PROCEDURE add_module;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE add_module
+    -> (IN p_mname varchar(32))
+    -> BEGIN
+    ->   DECLARE v_datetime datetime;
+    ->   SET v_datetime = NOW();
+    ->   INSERT INTO module (mname, create_date) VALUES (p_mname, v_datetime);
+    -> END
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CALL add_module('物理');
+    -> //
+Query OK, 1 row affected (0.05 sec)
+
+mysql> SELECT * FROM module //
++-----+-------+---------------------+---------------------+
+| mid | mname | create_date         | update_date         |
++-----+-------+---------------------+---------------------+
+|   1 | 物理  | 2013-03-28 15:18:20 | 2013-03-28 15:18:20 | 
++-----+-------+---------------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> DELIMITER ;
+mysql> UPDATE module 
+    -> SET mname = '化学'
+    -> WHERE mid = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM module;
++-----+-------+---------------------+---------------------+
+| mid | mname | create_date         | update_date         |
++-----+-------+---------------------+---------------------+
+|   1 | 化学  | 2013-03-28 15:18:20 | 2013-03-28 15:19:38 | 
++-----+-------+---------------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> CALL add_module('物理');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL add_module('生物');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM module;
++-----+-------+---------------------+---------------------+
+| mid | mname | create_date         | update_date         |
++-----+-------+---------------------+---------------------+
+|   1 | 化学  | 2013-03-28 15:18:20 | 2013-03-28 15:19:38 | 
+|   2 | 物理  | 2013-03-28 15:22:53 | 2013-03-28 15:22:53 | 
+|   3 | 生物  | 2013-03-28 15:23:09 | 2013-03-28 15:23:09 | 
++-----+-------+---------------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE slct_module
+    -> ()
+    -> BEGIN
+    ->   SELECT * FROM module;
+    -> END
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> CALL slct_module();
++-----+-------+---------------------+---------------------+
+| mid | mname | create_date         | update_date         |
++-----+-------+---------------------+---------------------+
+|   1 | 化学  | 2013-03-28 15:18:20 | 2013-03-28 15:19:38 | 
+|   2 | 物理  | 2013-03-28 15:22:53 | 2013-03-28 15:22:53 | 
+|   3 | 生物  | 2013-03-28 15:23:09 | 2013-03-28 15:23:09 | 
++-----+-------+---------------------+---------------------+
+3 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CALL add_module('数学');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL add_module('语文');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL add_module('历史');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL add_module('地理');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL add_module('天文学');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL add_module('政治');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL add_module('哲学');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL add_module('神学');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL add_module('计算机');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CALL slct_module();
++-----+--------+---------------------+---------------------+
+| mid | mname  | create_date         | update_date         |
++-----+--------+---------------------+---------------------+
+|   1 | 化学   | 2013-03-28 15:18:20 | 2013-03-28 15:19:38 | 
+|   2 | 物理   | 2013-03-28 15:22:53 | 2013-03-28 15:22:53 | 
+|   3 | 生物   | 2013-03-28 15:23:09 | 2013-03-28 15:23:09 | 
+|   4 | 数学   | 2013-03-28 15:38:31 | 2013-03-28 15:38:31 | 
+|   5 | 语文   | 2013-03-28 15:38:44 | 2013-03-28 15:38:44 | 
+|   6 | 历史   | 2013-03-28 15:38:57 | 2013-03-28 15:38:57 | 
+|   7 | 地理   | 2013-03-28 15:39:07 | 2013-03-28 15:39:07 | 
+|   8 | 天文学 | 2013-03-28 15:39:34 | 2013-03-28 15:39:34 | 
+|   9 | 政治   | 2013-03-28 15:39:52 | 2013-03-28 15:39:52 | 
+|  10 | 哲学   | 2013-03-28 15:40:01 | 2013-03-28 15:40:01 | 
+|  11 | 神学   | 2013-03-28 15:40:26 | 2013-03-28 15:40:26 | 
+|  12 | 计算机 | 2013-03-28 15:41:09 | 2013-03-28 15:41:09 | 
++-----+--------+---------------------+---------------------+
+12 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> SELECT * FROM module ORDER BY mid ASC LIMIT 2,6;
++-----+--------+---------------------+---------------------+
+| mid | mname  | create_date         | update_date         |
++-----+--------+---------------------+---------------------+
+|   3 | 生物   | 2013-03-28 15:23:09 | 2013-03-28 15:23:09 | 
+|   4 | 数学   | 2013-03-28 15:38:31 | 2013-03-28 15:38:31 | 
+|   5 | 语文   | 2013-03-28 15:38:44 | 2013-03-28 15:38:44 | 
+|   6 | 历史   | 2013-03-28 15:38:57 | 2013-03-28 15:38:57 | 
+|   7 | 地理   | 2013-03-28 15:39:07 | 2013-03-28 15:39:07 | 
+|   8 | 天文学 | 2013-03-28 15:39:34 | 2013-03-28 15:39:34 | 
++-----+--------+---------------------+---------------------+
+6 rows in set (0.01 sec)
+
+mysql> SELECT * FROM module ORDER BY mid ASC LIMIT 1,6;
++-----+-------+---------------------+---------------------+
+| mid | mname | create_date         | update_date         |
++-----+-------+---------------------+---------------------+
+|   2 | 物理  | 2013-03-28 15:22:53 | 2013-03-28 15:22:53 | 
+|   3 | 生物  | 2013-03-28 15:23:09 | 2013-03-28 15:23:09 | 
+|   4 | 数学  | 2013-03-28 15:38:31 | 2013-03-28 15:38:31 | 
+|   5 | 语文  | 2013-03-28 15:38:44 | 2013-03-28 15:38:44 | 
+|   6 | 历史  | 2013-03-28 15:38:57 | 2013-03-28 15:38:57 | 
+|   7 | 地理  | 2013-03-28 15:39:07 | 2013-03-28 15:39:07 | 
++-----+-------+---------------------+---------------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM module ORDER BY mid ASC LIMIT 0,6;
++-----+-------+---------------------+---------------------+
+| mid | mname | create_date         | update_date         |
++-----+-------+---------------------+---------------------+
+|   1 | 化学  | 2013-03-28 15:18:20 | 2013-03-28 15:19:38 | 
+|   2 | 物理  | 2013-03-28 15:22:53 | 2013-03-28 15:22:53 | 
+|   3 | 生物  | 2013-03-28 15:23:09 | 2013-03-28 15:23:09 | 
+|   4 | 数学  | 2013-03-28 15:38:31 | 2013-03-28 15:38:31 | 
+|   5 | 语文  | 2013-03-28 15:38:44 | 2013-03-28 15:38:44 | 
+|   6 | 历史  | 2013-03-28 15:38:57 | 2013-03-28 15:38:57 | 
++-----+-------+---------------------+---------------------+
+6 rows in set (0.00 sec)
+
+mysql> SHOW PROCEDURES;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROCEDURES' at line 1
+mysql> SHOW PROCEDURE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> SHOW PROCEDURE STATUS;
++-----+-------------+-----------+----------------+---------------------+---------------------+---------------+---------+
+| Db  | Name        | Type      | Definer        | Modified            | Created             | Security_type | Comment |
++-----+-------------+-----------+----------------+---------------------+---------------------+---------------+---------+
+| bar | add_module  | PROCEDURE | root@localhost | 2013-03-28 15:18:08 | 2013-03-28 15:18:08 | DEFINER       |         | 
+| bar | slct_module | PROCEDURE | root@localhost | 2013-03-28 15:31:13 | 2013-03-28 15:31:13 | DEFINER       |         | 
++-----+-------------+-----------+----------------+---------------------+---------------------+---------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> DROP PROCEDURE slct_module;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE PROCEDURE slct_limit_module
+    -> ()
+    -> /c
+    -> \c
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE slct_limit_module
+    -> ()
+    -> BEGIN
+    ->   SELECT \C
+ERROR: 
+Usage: \C char_setname | charset charset_name
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 4
+mysql> CREATE PROCEDURE slct_limit_module
+    -> (IN p_startFrom int)
+    -> BEGIN
+    ->   SELECT * FROM module ORDER BY mid ASC LIMIT p_startFrom, 6;
+    -> END;
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'p_startFrom, 6;
+END' at line 4
+mysql> CREATE PROCEDURE slct_limit_module
+    -> (IN p_startFrom int)
+    -> BEGIN
+    ->   DECLARE v_startFrom;
+    ->   SET v_startFrom = p_startFrom;
+    ->   SELECT * FROM module ORDER BY mid ASC LIMIT v_startFrom, 6;
+    -> END;
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ';
+  SET v_startFrom = p_startFrom;
+  SELECT * FROM module ORDER BY mid ASC LIMIT' at line 4
+mysql> CREATE PROCEDURE slct_limit_module
+    -> (IN p_startFrom int)
+    -> BEGIN
+    ->   SELECT * FROM module ORDER BY mid ASC LIMIT p_startFrom, 6;\C
+ERROR: 
+Usage: \C char_setname | charset charset_name
+    -> \C
+ERROR: 
+Usage: \C char_setname | charset charset_name
+    -> /C
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'p_startFrom, 6;
+
+/C' at line 4
+mysql> CREATE PROCEDURE slct_limit_module
+    -> (IN p_startFrom int)
+    -> BEGIN
+    ->   DECLARE v_startFrom INT  SET v_startFrom = p_startFrom;;
+    ->   SELECT * FROM module ORDER BY mid ASC LIMIT v_startFrom, 6;
+    -> END;
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SET v_startFrom = p_startFrom;;
+  SELECT * FROM module ORDER BY mid ASC LIMIT v_' at line 4
+mysql> CREATE PROCEDURE slct_limit_module
+    -> (IN p_startFrom int)
+    -> BEGIN
+    ->   DECLARE v_startFrom INT ;
+    ->   SET v_startFrom = p_startFrom;
+    ->   SELECT * FROM module ORDER BY mid ASC LIMIT v_startFrom, 6;
+    -> END;
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'v_startFrom, 6;
+END' at line 6
+mysql> \t

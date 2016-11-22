@@ -16,9 +16,9 @@ Git 是一个很强大的分布式版本控制系统，我打算用它来管理私人的代码和文档。
 
 我的 EmEditor.exe 的路径是“F:/工具箱/文档工具/EmEditor/EmEditor.exe”，以下配置都是基于这个路径，如果你的路径如果与我不同请自行智能纠错。
 
-1. Step1 新增一个名为 GIT_EDITOR 的系统环境变量，设置它的值为 EmEditor.exe //sp。
-2. Step2 修改 PATH 系统环境变量，追加 F:\工具箱\文档工具\EmEditor。
-3. Step3 打开新的Git命令行以便让系统环境变量的修改生效。
+*. Step1 新增一个名为 GIT_EDITOR 的系统环境变量，设置它的值为 EmEditor.exe //sp。
+*. Step2 修改 PATH 系统环境变量，追加 F:\工具箱\文档工具\EmEditor。
+*. Step3 打开新的Git命令行以便让系统环境变量的修改生效。
 
 测试 执行 git commit -a 命令，会发现经由新的 EmEditor 进程打开 COMMIT_EDITMSG 文件，git commit -a 命令处于阻塞状态，在 EmEditor 中输入一些文字，保存文件并关闭 EmEditor，git commit -a 命令继续执行并成功提交。
 

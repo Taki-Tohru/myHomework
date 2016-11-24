@@ -46,7 +46,7 @@ id sem consectetuer libero luctus adipiscing.
 >    return shell_exec("echo $input | $markdown_script");
 ====
 
-```
+```C
 #include <stdio.h>
 
 int main() {

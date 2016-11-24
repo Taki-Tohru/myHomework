@@ -64,9 +64,12 @@ int main() {
 
 ***
 
-$\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+<script type="math/tex; mode=display">
+\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N
+</script>
 
-$$
+<script type="math/tex; mode=display">
 \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
-$$
+</script>
 

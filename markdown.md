@@ -28,14 +28,14 @@ Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
 > Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
 id sem consectetuer libero luctus adipiscing.
 
-====
+***
 > This is the first level of quoting.
 >
 > > This is nested blockquote.
 >
 > Back to the first level.
 
-====
+***
 > ## This is title.
 >
 > 1. This is list 1.
@@ -44,7 +44,7 @@ id sem consectetuer libero luctus adipiscing.
 > Some code:
 >
 >    return shell_exec("echo $input | $markdown_script");
-====
+***
 
 ```C
 #include <stdio.h>
@@ -53,3 +53,11 @@ int main() {
     return 0;
 }
 ```
+
+***
+
+|Item|Value|Qty|
+|:---|---:|:---:|
+|Computer|$1600|5|
+|Phone|$12|12|
+|Pipe|$1|234|

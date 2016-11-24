@@ -65,3 +65,8 @@ int main() {
 ***
 
 $\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$
+
+$$
+\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
+$$
+

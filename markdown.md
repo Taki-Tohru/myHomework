@@ -61,3 +61,7 @@ int main() {
 |Computer|$1600|5|
 |Phone|$12|12|
 |Pipe|$1|234|
+
+***
+
+$\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$

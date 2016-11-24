@@ -44,3 +44,11 @@ id sem consectetuer libero luctus adipiscing.
 > Some code:
 >
 >    return shell_exec("echo $input | $markdown_script");
+====
+```
+#include <stdio.h>
+
+int main() {
+    return 0;
+}
+```
